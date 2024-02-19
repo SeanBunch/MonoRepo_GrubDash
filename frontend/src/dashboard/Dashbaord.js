@@ -68,10 +68,6 @@ function Dashboard() {
   return (
     <main>
       <h1>Dashboard</h1>
-      <p className="text-muted">
-        Eventually, dashboard will not be visible to all users; after login is
-        added.
-      </p>
       <hr />
       <div className="row">
         <div className="col-md-12 col-lg-12 col-sm-12">
