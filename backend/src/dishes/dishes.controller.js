@@ -84,7 +84,6 @@ function update(req, res, next) {
 }
 
 function list(req, res) {
-  console.log("list")
   res.json({ data: dishes });
 }
 
