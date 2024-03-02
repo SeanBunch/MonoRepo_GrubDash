@@ -6,9 +6,9 @@ function App() {
   return (
     <div className="app-routes">
       {/* <Switch> */}
-        <Route path="/">
+        {/* <Route path="/"> */}
           <Layout />
-        </Route>
+        {/* </Route> */}
       {/* </Switch> */}
     </div>
   );
