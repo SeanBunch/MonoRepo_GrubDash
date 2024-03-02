@@ -14,6 +14,10 @@ app.use(express.json());
 app.use("/dishes", dishesRouter);
 app.use("/orders", ordersRouter);
 
+app.use("/", (req, res, next) => {
+    res.json({ data: "Grub Dash server online" });
+  });
+
 app.use(notFound);
 
 app.use(errorHandler);

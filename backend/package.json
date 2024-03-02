@@ -14,7 +14,7 @@
     "docker:stop": "docker stop $(docker ps -q)",
     "docker:test": "docker run -t thinkful-ed/zid-be-project-grub-dash-01-qualified npm test",
     "start": "node src/server.js",
-    "start:dev": "nodemon src/server.js",
+    "dev": "nodemon src/server.js",
     "start:solution": "npm run -it docker:build && npm run docker:run",
     "test": "jest",
     "test:solution": "npm run docker:build && npm run docker:test",

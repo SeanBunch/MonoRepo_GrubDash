@@ -7,6 +7,7 @@ function Home({ addToCart }) {
   const [dishes, setDishes] = useState([]);
   const [error, setError] = useState(null);
 
+  useEffect(loadDishes, []);
   
   function loadDishes() {
     const abortController = new AbortController();
@@ -15,7 +16,6 @@ function Home({ addToCart }) {
     return () => abortController.abort();
   }
   
-  useEffect(loadDishes, []);
 
   const cards = dishes.map((dish) => (
     <DishCard key={dish.id} dish={dish}>

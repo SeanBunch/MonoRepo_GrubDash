@@ -88,7 +88,7 @@ function Layout() {
           <Route path="/dishes/new">
             <DishCreate />
           </Route>
-          <Route exact={true} path="/">
+          <Route path="/">
             <Home addToCart={addToCart} />
           </Route>
           <Route>
