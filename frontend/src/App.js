@@ -5,11 +5,11 @@ import Layout from "./layout/Layout";
 function App() {
   return (
     <div className="app-routes">
-      {/* <Switch> */}
-        {/* <Route path="/"> */}
+      <Switch>
+        <Route path="/">
           <Layout />
-        {/* </Route> */}
-      {/* </Switch> */}
+        </Route>
+      </Switch>
     </div>
   );
 }
