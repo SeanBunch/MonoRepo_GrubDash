@@ -5,8 +5,7 @@ const orders = require(path.resolve("src/data/orders-data"));
 
 // Use this function to assigh ID's when necessary
 const nextId = require("../utils/nextId");
-
-// TODO: Implement the /orders handlers needed to make the tests pass
+const { stat } = require("fs");
 
 function bodyDataCheck(propertyName) {
   return function (req, res, next) {
@@ -113,6 +112,7 @@ function create(req, res, next) {
     id: newId,
     deliverTo,
     mobileNumber,
+    status,
     dishes,
   };
   orders.push(newOrder);
@@ -128,17 +128,17 @@ function read(req, res, next) {
 function update(req, res, next) {
   const { orderId } = req.params;
   const { data: { id, deliverTo, mobileNumber, status, dishes } = {} } =
-    req.body;
-
-  if (!id || orderId === id) {
-    const updatedOrder = {
-      id: orderId,
-      deliverTo,
-      mobileNumber,
-      status,
-      dishes,
-    };
-    res.json({ data: updatedOrder });
+  req.body;
+  
+  let order = orders.find(order => order.id === orderId);
+  
+  if (id && orderId === id) {
+    order.deliverTo = deliverTo;
+    order.mobileNumber = mobileNumber;
+    order.status = status;
+    order.dishes = dishes;
+    
+    return res.json({ data: order });
   }
   next({
     status: 400,

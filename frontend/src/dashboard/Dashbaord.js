@@ -10,7 +10,7 @@ function Dashboard() {
   const [dishesError, setDishedError] = useState(null);
 
   useEffect(loadDashboard, []);
-
+  
   function loadDashboard() {
     const abortController = new AbortController();
 

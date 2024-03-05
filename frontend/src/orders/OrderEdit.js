@@ -10,16 +10,20 @@ function OrderEdit() {
 
   const [order, setOrder] = useState({});
   const [error, setError] = useState(null);
-
+  
   useEffect(() => {
     const abortController = new AbortController();
-    readOrder(orderId, abortController.signal).then(setOrder).catch(setError);
+    readOrder(orderId, abortController.signal)
+    .then((order) => setOrder(order))
+    .catch(setError);
+    
     return () => abortController.abort();
   }, [orderId]);
-
+  
   function submitHandler(updatedOrder) {
+    // const abortController = new AbortController();
     updateOrder(updatedOrder)
-      .then((savedOrder) => history.push(`/orders/${savedOrder.id}`))
+      .then((savedOrder) => history.push(`/orders/${savedOrder.id}/confirmed`))
       .catch(setError);
   }
 

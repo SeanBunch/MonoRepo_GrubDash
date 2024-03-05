@@ -4,7 +4,7 @@ import OrderFormDish from "./OrderFormDish";
 function OrderForm({
   order = {
     deliverTo: "",
-    mobilePhone: "",
+    mobileNumber: "",
     status: "pending",
     dishes: [],
   },
@@ -15,11 +15,13 @@ function OrderForm({
   readOnly = false,
   showStatus = false,
 }) {
+  console.log("ORDER FORM,", order)
   function changeHandler({ target: { name, value } }) {
     setOrder((previousOrder) => ({
       ...previousOrder,
       [name]: value,
     }));
+    
   }
 
   function submitHandler(event) {
@@ -106,7 +108,7 @@ function OrderForm({
           />
         </div>
         <div className="form-group">
-          <label htmlFor="deliverTo">Mobile Number</label>
+          <label htmlFor="mobileNumber">Mobile Number</label>
           <input
             type="text"
             className="form-control"
@@ -114,7 +116,7 @@ function OrderForm({
             name="mobileNumber"
             required={true}
             value={order.mobileNumber}
-            placeholder="Enter your mobile number "
+            placeholder="Enter your mobile number"
             disabled={readOnly}
             onChange={changeHandler}
           />
