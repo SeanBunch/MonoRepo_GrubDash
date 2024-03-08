@@ -23,7 +23,10 @@ function Home({ addToCart }) {
       </button>
     </DishCard>
   ))) : (
-    <p>Loading...</p>
+    <div>
+      <h1>Loading...</h1>
+      <p>The website is hosted on a free render.com account. The backend takes up to 1 minute to spin up. Thank you for visiting!</p>
+    </div>
   );
 
   return (
