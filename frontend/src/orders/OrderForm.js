@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import OrderFormDish from "./OrderFormDish";
 
 function OrderForm({
@@ -9,15 +9,21 @@ function OrderForm({
     dishes: [],
   },
   setOrder,
-  onCancel,
   onSubmit,
   children,
   readOnly = false,
   showStatus = false,
 }) {
-  console.log("ORDER FORM,", order)
+  const [orderOnSub, setorderOnSub] = useState({
+    id: order.id,
+    deliverTo: order.deliverTo,
+    mobileNumber: order.mobileNumber,
+    status: order.status,
+    dishes: order.dishes,
+  });
+  
   function changeHandler({ target: { name, value } }) {
-    setOrder((previousOrder) => ({
+    setorderOnSub((previousOrder) => ({
       ...previousOrder,
       [name]: value,
     }));
@@ -27,7 +33,7 @@ function OrderForm({
   function submitHandler(event) {
     event.preventDefault();
     event.stopPropagation();
-    onSubmit(order);
+    onSubmit(orderOnSub);
   }
 
   function setDishQuantity(dishId, quantity) {
@@ -81,7 +87,7 @@ function OrderForm({
               id="status"
               name="status"
               required={true}
-              value={order.status}
+              value={orderOnSub.status}
               placeholder="Select a status for the order"
               disabled={readOnly}
               onChange={changeHandler}
@@ -101,7 +107,7 @@ function OrderForm({
             id="deliverTo"
             name="deliverTo"
             required={true}
-            value={order.deliverTo}
+            value={orderOnSub.deliverTo}
             placeholder="Enter the delivery address"
             disabled={readOnly}
             onChange={changeHandler}
@@ -115,7 +121,7 @@ function OrderForm({
             id="mobileNumber"
             name="mobileNumber"
             required={true}
-            value={order.mobileNumber}
+            value={orderOnSub.mobileNumber}
             placeholder="Enter your mobile number"
             disabled={readOnly}
             onChange={changeHandler}

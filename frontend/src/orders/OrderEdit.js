@@ -46,7 +46,6 @@ function OrderEdit() {
     <OrderForm
       order={order}
       setOrder={setOrder}
-      onCancel={cancelHandler}
       onSubmit={submitHandler}
       readOnly={order.status === "delivered"}
       showStatus={true}

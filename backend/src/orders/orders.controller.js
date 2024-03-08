@@ -83,16 +83,7 @@ function status(req, res, next) {
   });
 }
 
-function orderDelivered(req, res, next) {
-  const { data: { status } = {} } = req.body;
-  if (status === "delivered") {
-    next({
-      status: 400,
-      message: `A delivered order cannot be changed`,
-    });
-  }
-  return next();
-}
+
 
 function deleteValidator(req, res, next) {
   const { order } = res.locals;
@@ -181,7 +172,6 @@ module.exports = {
     quantityExists,
     quantityIsNumber,
     status,
-    orderDelivered,
     update,
   ],
   delete: [orderExists, deleteValidator, destroy],
