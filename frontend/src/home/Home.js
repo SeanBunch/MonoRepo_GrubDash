@@ -16,14 +16,15 @@ function Home({ addToCart }) {
     return () => abortController.abort();
   }
   
-
-  const cards = dishes.map((dish) => (
+  const cards = dishes[0] ? ( dishes.map((dish) => (
     <DishCard key={dish.id} dish={dish}>
       <button className="btn btn-primary" onClick={() => addToCart(dish)}>
         <span className="oi oi-plus" /> Add to cart
       </button>
     </DishCard>
-  ));
+  ))) : (
+    <p>Loading...</p>
+  );
 
   return (
     <main>
