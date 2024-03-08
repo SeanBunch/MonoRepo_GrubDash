@@ -62,20 +62,18 @@ function read(req, res, next) {
 }
 
 function update(req, res, next) {
-  const dish = res.locals.dish;
   const { dishId } = req.params;
   const { data: { id, name, description, price, image_url } = {} } = req.body;
 
-  if (dishId === id || !id) {
-    const updatedDish = {
-      id: dishId,
-      name,
-      description,
-      price,
-      image_url,
-    };
+  let dish = dishes.find(dish => dish.id === dishId);
 
-    res.json({ data: updatedDish });
+  if (id && dishId === id) {
+    dish.name = name;
+    dish.description = description;
+    dish.price = price;
+    dish.image_url = image_url;
+
+    return res.json({ data: dish });
   }
   next({
     status: 400,
