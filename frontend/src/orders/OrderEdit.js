@@ -10,7 +10,7 @@ function OrderEdit() {
 
   const [order, setOrder] = useState({});
   const [error, setError] = useState(null);
-  
+
   useEffect(() => {
     const abortController = new AbortController();
     readOrder(orderId, abortController.signal)
@@ -21,7 +21,6 @@ function OrderEdit() {
   }, [orderId]);
   
   function submitHandler(updatedOrder) {
-    // const abortController = new AbortController();
     updateOrder(updatedOrder)
       .then((savedOrder) => history.push(`/orders/${savedOrder.id}/confirmed`))
       .catch(setError);

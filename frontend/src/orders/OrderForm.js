@@ -52,8 +52,14 @@ function OrderForm({
     });
   }
 
-  function deleteDish(dishId) {
-    setOrder((previousOrder) => {
+function deleteDish(dishId) {
+     setOrder((previousOrder) => {
+      return {
+        ...previousOrder,
+        dishes: previousOrder.dishes.filter((dish) => dish.id !== dishId),
+      };
+    });
+    setorderOnSub((previousOrder) => {
       return {
         ...previousOrder,
         dishes: previousOrder.dishes.filter((dish) => dish.id !== dishId),
