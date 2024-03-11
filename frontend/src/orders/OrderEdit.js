@@ -66,7 +66,7 @@ function OrderEdit() {
         </button>
       </div>
       <div className="col-auto">
-        <button
+        {order.status === "pending" ? (<button
           type="button"
           className="btn btn-danger"
           title="Delete Order"
@@ -74,7 +74,16 @@ function OrderEdit() {
           onClick={deleteHandler}
         >
           <span className="oi oi-trash" />
-        </button>
+        </button>) : (<p>'Pending' status only <button
+          type="button"
+          className="btn btn-danger"
+          title="Delete Order"
+          disabled={order.status !== "pending"}
+          onClick={deleteHandler}
+        >
+          <span className="oi oi-trash" />
+        </button></p>)
+        }
       </div>
     </OrderForm>
   ) : (
