@@ -14,7 +14,7 @@ Home page shows meals that have been created through the dashboard and can be ad
 ![homePage](/readme_images/GrubDashHome.PNG)
 
 ## Dashboard
-Dashboard allows meal creation with Create Dish button. Edit buttons allow the editing of Dish and Order Delivery.    
+Dashboard allows meal creation with Create Dish button. Edit buttons allow the editing of dish and order deliveries.    
 
 
 ![dashboard](/readme_images/GrubDashDashboard.PNG)
@@ -26,7 +26,7 @@ A dish(s) can be added to cart from the home page. Submit will add the Order to 
 ![cart](/readme_images/GrubDashCart.PNG)
 
 ## Create Dish
-Allows a new dish to be display on the home page that can then be added to cart when required for Order. 
+Allows a new dish to be displayed on the home page that can then be added to cart when required for customer order.
 
 
 ![createDish](/readme_images/GrubDashCreateDish.PNG)
