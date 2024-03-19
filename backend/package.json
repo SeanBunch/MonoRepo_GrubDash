@@ -10,8 +10,7 @@
     "test:watch": "jest --watch"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Sean Bunch",
   "dependencies": {
     "cors": "^2.8.5",
     "cross-conf-env": "^1.2.1",
