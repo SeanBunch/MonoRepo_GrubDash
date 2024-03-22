@@ -5,3 +5,14 @@
 .badge-pill {
   vertical-align: top;
 }
+
+.card-img-top {
+  width: 100%; /* Ensures the image fills its container */
+  height: 40%; /* Allows the image to maintain its aspect ratio */
+  object-fit: cover;
+}
+
+.card {
+  height: 500px;
+
+}

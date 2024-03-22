@@ -12,9 +12,11 @@ function DishCard({ dish, children }) {
         <div className="card-body">
           <h5 className="card-title text-truncate">{dish.name}</h5>
           <p className="card-text">{dish.description}</p>
-          <p className="card-text">$ {dish.price}</p>
         </div>
-        <div className="card-footer">{children}</div>
+          <p className="card-text offset-md-1">$ {dish.price}</p>
+        <div className="card-footer">
+          {children}
+          </div>
       </div>
     </div>
   );
