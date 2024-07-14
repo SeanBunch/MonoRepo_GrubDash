@@ -3,6 +3,8 @@ Deployed on Render: https://grub-dash-frontend-9kc2.onrender.com
 
 ## **Please be patient, page will load slow!**
 
+## TypeScript coming soon ## 
+
 
 The app is deployed in a free environment on Render so the initial loading of the app can take a few extra seconds.
 
