@@ -22,7 +22,7 @@
     "target": "es2017",
     "importHelpers": false,
     "preserveSymlinks": true,
-    "outDir": "build",
+    "outDir": "build"
   },
   "exclude": [
     "node_modules",
