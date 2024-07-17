@@ -22,7 +22,8 @@
     "target": "es2017",
     "importHelpers": false,
     "preserveSymlinks": true,
-    "outDir": "build"
+    "outDir": "build",
+    "typeRoots": ["./node_modules/@types","./src/types"]
   },
   "exclude": [
     "node_modules",
