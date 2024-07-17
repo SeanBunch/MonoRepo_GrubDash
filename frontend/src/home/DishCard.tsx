@@ -1,5 +1,5 @@
 import React from "react";
-import { Dish } from "../utils/types";
+import { Dish } from "../types/types";
 
 interface DishCardProps {
     dish: Dish;
