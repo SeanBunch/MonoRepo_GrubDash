@@ -7,26 +7,28 @@ export interface Dish {
   quantity?: number;
   status?: string;
   mobileNumber?: string;
-}
+};
 
 export type Order = {
-     id: number;
-     deliverTo: string;
-     mobileNumber: string;
-     status: string;
-    dishes: Dish[];
-    };
+  id: number;
+  deliverTo: string;
+  mobileNumber: string;
+  status: string;
+  dishes: Dish[];
+};
 
 export interface RouteParams {
-        dishId: string;
-    }
-
-    // src/types.ts
+  dishId: string;
+};
 
 export interface ErrorAlertProps {
   error: { message: string } | null;
-}
+};
 
 export type HomeProps = {
   addToCart: (dish: Dish) => void;
+};
+
+export interface MenuProps {
+  cartCount: number;
 };
