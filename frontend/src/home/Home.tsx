@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { listDishes } from "../utils/api";
 import DishCard from "./DishCard";
 import ErrorAlert from "../layout/ErrorAlert";
-import { Dish } from "../types/types";
+import { Dish, HomeProps } from "../types/types";
 
-type HomeProps = {
-    addToCart: (dish: Dish) => void;
-};
+// type HomeProps = {
+//     addToCart: (dish: Dish) => void;
+// };
 
 function Home({ addToCart: addToCart }: HomeProps) {
   const [dishes, setDishes] = useState<Dish[]>([]);
