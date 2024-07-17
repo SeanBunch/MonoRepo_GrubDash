@@ -6,6 +6,7 @@ import { createDish } from "../utils/api";
 
 
 type Dish = { 
+    id: number;
     name: string; 
     description: string;
     image_url: string;

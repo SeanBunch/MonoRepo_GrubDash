@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 type Dish = { 
+    id: number;
     name: string; 
     description: string;
     image_url: string;
@@ -16,7 +17,7 @@ type DishFormProps = {
 function DishForm({
     onSubmit,
     onCancel,
-    initialState = { name: "", description: "", image_url: "", price: 0 },
+    initialState = { id: 0, name: "", description: "", image_url: "", price: 0 },
   }: DishFormProps) {
 
   const [dish, setDish] = useState<Dish>(initialState);
