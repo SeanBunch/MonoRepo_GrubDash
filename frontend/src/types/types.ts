@@ -4,7 +4,7 @@ export interface Dish {
   description: string;
   price: number;
   image_url: string;
-  quantity?: number;
+  quantity: number;
   status?: string;
   mobileNumber?: string;
 };
@@ -19,6 +19,7 @@ export type Order = {
 
 export interface RouteParams {
   dishId: string;
+  orderId: string;
 };
 
 export interface ErrorAlertProps {
@@ -31,4 +32,29 @@ export type HomeProps = {
 
 export interface MenuProps {
   cartCount: number;
+};
+
+export interface OrderFormProps {
+  order: Order;
+  setOrder?: React.Dispatch<React.SetStateAction<Order>>;
+  onSubmit?: (order: Order) => void;
+  children?: React.ReactNode;
+  readOnly: boolean;
+  showStatus: boolean;
+};
+
+export interface FetchError extends Error {
+  status?: number;
+  response?: Response;
+};
+
+export type DishFormProps = {
+  onSubmit: (dish: Dish) => void;
+  onCancel: () => void;
+  initialState?:Dish;
+};
+
+export interface DishCardProps {
+  dish: Dish;
+  children: React.ReactNode;
 };
