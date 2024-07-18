@@ -4,9 +4,6 @@ import DishCard from "./DishCard";
 import ErrorAlert from "../layout/ErrorAlert";
 import { Dish, HomeProps } from "../types/types";
 
-// type HomeProps = {
-//     addToCart: (dish: Dish) => void;
-// };
 
 function Home({ addToCart: addToCart }: HomeProps) {
   const [dishes, setDishes] = useState<Dish[]>([]);

@@ -1,10 +1,6 @@
 import React from "react";
-import { Dish } from "../types/types";
+import { DishCardProps } from "../types/types";
 
-interface DishCardProps {
-    dish: Dish;
-    children: React.ReactNode;
-}
 
 function DishCard({ dish, children }: DishCardProps) {
   return (

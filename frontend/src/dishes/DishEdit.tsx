@@ -3,17 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
 import DishForm from "./DishForm";
 import { readDish, updateDish } from "../utils/api";
-
-interface RouteParams {
-    dishId: string;
-}
-type Dish = { 
-    id: number;
-    name: string; 
-    description: string;
-    image_url: string;
-    price: number; 
-}
+import { Dish, RouteParams } from "../types/types";
 
 function DishEdit() {
   const history = useHistory();
@@ -23,21 +13,35 @@ function DishEdit() {
     id: 0,
     name: "",
     description: "",
+    price: 0,
     image_url: "",
-    price: 0
+    quantity: 0,
+    status: "",
+    mobileNumber: "",
   });
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const abortController = new AbortController();
-    readDish(dishId, abortController.signal).then(setDish).catch(setError);
+    const id = parseInt(dishId, 10);
+    readDish(id, abortController.signal).then(setDish).catch(setError);
     return () => abortController.abort();
   }, [dishId]);
 
   function submitHandler(updatedDishOrder: Dish) {
-    updateDish(updatedDishOrder)
-      .then(() => history.push(`/dashboard`))
-      .catch(setError);
+    const abortController = new AbortController();
+    try {
+      updateDish(updatedDishOrder, abortController.signal)
+        .then(() => history.push(`/dashboard`))
+        .catch(setError);
+    } catch (error: any) {
+      setError(error);
+    } finally {
+      abortController.abort();
+    }
+    // updateDish(updatedDishOrder, abortController.signal)
+    //   .then(() => history.push(`/dashboard`))
+    //   .catch(setError);
   }
 
   function cancelHandler() {

@@ -3,28 +3,21 @@ import {  readDish } from "../utils/api";
 import { Link, useParams } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
 import DishCard from "../home/DishCard";
-
-interface RouteParams {
-    dishId: string;
-}
-type Dish = { 
-    id: number;
-    name: string; 
-    description: string;
-    image_url: string;
-    price: number; 
-}
+import { Dish, RouteParams } from "../types/types";
 
 function DishView() {
-//   const history = useHistory();
+  // const history = useHistory();
   const { dishId } = useParams<RouteParams>();
 
   const [dish, setDish] = useState<Dish>({ 
     id: 0,
     name: "", 
     description: "",
+    price: 0,
     image_url: "",
-    price: 0 
+    quantity: 0,
+    status: "",
+    mobileNumber: "",
 });
   const [error, setError] = useState(null);
 
@@ -32,8 +25,9 @@ function DishView() {
 
   function loadOrder() {
     const abortController = new AbortController();
+    const id = parseInt(dishId, 10);
 
-    readDish(dishId, abortController.signal).then(setDish).catch(setError);
+    readDish(id, abortController.signal).then(setDish).catch(setError);
 
     return () => abortController.abort();
   }

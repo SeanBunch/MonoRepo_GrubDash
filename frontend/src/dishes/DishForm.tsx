@@ -1,23 +1,10 @@
 import React, { useState } from "react";
-
-type Dish = { 
-    id: number;
-    name: string; 
-    description: string;
-    image_url: string;
-    price: number; 
-}
-
-type DishFormProps = {
-  onSubmit: (dish: Dish) => void;
-  onCancel: () => void;
-  initialState?:Dish;
-};
+import { Dish, DishFormProps } from "../types/types";
 
 function DishForm({
     onSubmit,
     onCancel,
-    initialState = { id: 0, name: "", description: "", image_url: "", price: 0 },
+    initialState = { id: 0, name: "", description: "", price: 0, image_url: "", quantity: 0, status: "", mobileNumber: "" },
   }: DishFormProps) {
 
   const [dish, setDish] = useState<Dish>(initialState);

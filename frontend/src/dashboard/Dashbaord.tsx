@@ -2,23 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { listDishes, listOrders } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
+import { Order, Dish } from "../types/types";
 
-type Order = {
-    id: number;
-      deliverTo: string;
-      mobileNumber: string;
-      status: string;
-      dishes: {
-        price: number;
-        quantity: number;
-      }[];
-    };
-type Dish = {
-        id: number;
-        name: string;
-        description: string;
-        price: number;
-    }
+
 function Dashboard() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [dishes, setDishes] = useState<Dish[]>([]);

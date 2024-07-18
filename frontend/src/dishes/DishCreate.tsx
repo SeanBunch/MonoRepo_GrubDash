@@ -3,15 +3,10 @@ import { useHistory } from "react-router-dom";
 import DishForm from "./DishForm";
 import ErrorAlert from "../layout/ErrorAlert";
 import { createDish } from "../utils/api";
+import { Dish } from "../types/types";
 
 
-type Dish = { 
-    id: number;
-    name: string; 
-    description: string;
-    image_url: string;
-    price: number; 
-}
+
 function DishCreate() {
   const history = useHistory();
 
