@@ -3,19 +3,14 @@ import OrderFormDish from "./OrderFormDish";
 import { OrderFormProps, Order } from "../types/types";
 
 function OrderForm({ 
-    order = {
-      id: 0,
-      deliverTo: "",
-      mobileNumber: "",
-      status: "",
-      dishes: [],
-    },
+    order,
     setOrder,
     onSubmit,
     children,
     readOnly = false,
     showStatus = false
 }: OrderFormProps) {
+
   const [orderOnSub, setorderOnSub] = useState<Order>({
     id: order.id,
     deliverTo: order.deliverTo,
@@ -23,7 +18,6 @@ function OrderForm({
     status: order.status,
     dishes: order.dishes,
   });
-  
   function changeHandler({ target: { name, value } }: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setorderOnSub((previousOrder) => ({
       ...previousOrder,
@@ -31,7 +25,7 @@ function OrderForm({
     }));
     
   }
-
+  
   function submitHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     event.stopPropagation();
@@ -39,10 +33,10 @@ function OrderForm({
       onSubmit(orderOnSub);
     }
   }
-
+  
   function setDishQuantity(dishId: number, quantity: number) {
     if (setOrder) {
-      setOrder((previousOrder) => {
+      setorderOnSub((previousOrder) => {
         const dishes = previousOrder.dishes.map((dish) => {
           return {
             ...dish,
@@ -77,7 +71,7 @@ function deleteDish(dishId: number) {
   }
 }
 
-  const dishes = order.dishes.map((dish) => (
+  const dishes = orderOnSub.dishes.map((dish) => (
     <OrderFormDish
       key={dish.id}
       dish={dish}
@@ -87,8 +81,8 @@ function deleteDish(dishId: number) {
     />
   ));
 
-  const total = order.dishes.reduce(
-    (sum, dish) => sum + dish.price * (dish.quantity || 1),
+  const total = orderOnSub.dishes.reduce(
+    (sum, dish) => sum + dish.price * (dish.quantity),
     0
   );
 

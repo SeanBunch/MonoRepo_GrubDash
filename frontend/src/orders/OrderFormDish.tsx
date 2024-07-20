@@ -2,10 +2,10 @@ import React from "react";
 import { OrderFormDishProps } from "../types/types";
 
 function OrderFormDish({
+  dish,
   setDishQuantity,
   deleteDish,
   readOnly,
-  dish,
 }: OrderFormDishProps) {
   function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     if (dish.id) {

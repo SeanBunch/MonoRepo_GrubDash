@@ -11,7 +11,6 @@ function Dashboard() {
     const [ordersError, setOrdersError] = useState<Error | null>(null);
     const [dishesError, setDishesError] = useState<Error | null>(null);
     
-    
   useEffect(loadDashboard, []);
   
   function loadDashboard() {
@@ -27,7 +26,7 @@ function Dashboard() {
     const total = order.dishes.reduce(
       (sum, dish) => sum + dish.price * dish.quantity,
       0
-    ).toFixed(2);
+    );
     return (
       <tr key={order.id}>
         <td>{index + 1}</td>
