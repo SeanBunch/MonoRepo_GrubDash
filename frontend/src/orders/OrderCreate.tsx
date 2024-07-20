@@ -14,6 +14,8 @@ function OrderCreate({ order, setOrder, onSubmit }: OrderCreateProps) {
     const abortController = new AbortController();
 
     createOrder(order, abortController.signal).then(onSubmit).catch(setError);
+
+    return () => abortController.abort();
   }
 
   function onCancel() {

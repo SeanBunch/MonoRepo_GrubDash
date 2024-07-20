@@ -25,9 +25,8 @@ function DishView() {
 
   function loadOrder() {
     const abortController = new AbortController();
-    const id = parseInt(dishId, 10);
 
-    readDish(id, abortController.signal).then(setDish).catch(setError);
+    readDish(dishId, abortController.signal).then(setDish).catch(setError);
 
     return () => abortController.abort();
   }

@@ -10,7 +10,6 @@ function Dashboard() {
     const [dishes, setDishes] = useState<Dish[]>([]);
     const [ordersError, setOrdersError] = useState<Error | null>(null);
     const [dishesError, setDishesError] = useState<Error | null>(null);
-    
   useEffect(loadDashboard, []);
   
   function loadDashboard() {

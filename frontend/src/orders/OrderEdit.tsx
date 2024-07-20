@@ -36,6 +36,8 @@ function OrderEdit() {
     updateOrder(updatedOrder, abortController.signal)
       .then((savedOrder) => history.push(`/orders/${savedOrder.id}/confirmed`))
       .catch(setError);
+
+    return () => abortController.abort();
   }
 
   function cancelHandler() {
