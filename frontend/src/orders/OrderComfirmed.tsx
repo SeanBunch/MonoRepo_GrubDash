@@ -26,9 +26,7 @@ function OrderConfirmed() {
 
   function loadOrder() {
     const abortController = new AbortController();
-    const id = parseInt(orderId, 10);
-
-    readOrder(id, abortController.signal).then(setOrder).catch(setError);
+    readOrder(orderId, abortController.signal).then(setOrder).catch(setError);
 
     return () => abortController.abort();
   }

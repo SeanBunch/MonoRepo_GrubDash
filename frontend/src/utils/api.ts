@@ -24,7 +24,6 @@ async function fetchJson<T>(url: string, options: RequestInit): Promise<T> {
       error.response = response;
 
       throw error;
-      // return Promise.reject({ message: payload.error });
     }
 
     return payload.data;
@@ -34,11 +33,6 @@ async function fetchJson<T>(url: string, options: RequestInit): Promise<T> {
       throw error;
     }
     throw error;
-
-    // if (error.name !== "AbortError") {
-    //   console.error(error.stack);
-    //   throw error;
-    // }
   }
 }
 
@@ -58,7 +52,7 @@ export async function createOrder(order: Order, signal: AbortSignal): Promise<Or
   return await fetchJson<Order>(url, options);
 }
 
-export async function readOrder(orderId: number, signal: AbortSignal): Promise<Order> {
+export async function readOrder(orderId: string, signal: AbortSignal): Promise<Order> {
   const url = `${API_BASE_URL}/orders/${orderId}`;
 
   try {
