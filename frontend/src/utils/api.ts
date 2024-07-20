@@ -99,7 +99,7 @@ export async function createDish(dish: Dish, signal: AbortSignal): Promise<Dish>
   return await fetchJson<Dish>(url, options);
 }
 
-export async function readDish(dishId: number, signal: AbortSignal): Promise<Dish> {
+export async function readDish(dishId: string, signal: AbortSignal): Promise<Dish> {
   const url = `${API_BASE_URL}/dishes/${dishId}`;
   return await fetchJson<Dish>(url, { signal });
 }

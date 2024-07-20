@@ -27,11 +27,14 @@ function OrderForm({
   }
   
   function submitHandler(event: FormEvent<HTMLFormElement>) {
+    const abortController = new AbortController();
     event.preventDefault();
     event.stopPropagation();
     if (onSubmit) {
       onSubmit(orderOnSub);
     }
+
+    return () => abortController.abort();
   }
   
   function setDishQuantity(dishId: number, quantity: number) {

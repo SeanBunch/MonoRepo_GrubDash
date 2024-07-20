@@ -9,39 +9,23 @@ function DishEdit() {
   const history = useHistory();
   const { dishId } = useParams<RouteParams>();
 
-  const [dish, setDish] = useState<Dish>({
-    id: 0,
-    name: "",
-    description: "",
-    price: 0,
-    image_url: "",
-    quantity: 0,
-    status: "",
-    mobileNumber: "",
-  });
+  const [dish, setDish] = useState<Dish | null>(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const abortController = new AbortController();
-    const id = parseInt(dishId, 10);
-    readDish(id, abortController.signal).then(setDish).catch(setError);
+    readDish(dishId, abortController.signal).then(setDish).catch(setError);
     return () => abortController.abort();
   }, [dishId]);
 
   function submitHandler(updatedDishOrder: Dish) {
     const abortController = new AbortController();
-    try {
-      updateDish(updatedDishOrder, abortController.signal)
-        .then(() => history.push(`/dashboard`))
-        .catch(setError);
-    } catch (error: any) {
-      setError(error);
-    } finally {
-      abortController.abort();
-    }
-    // updateDish(updatedDishOrder, abortController.signal)
-    //   .then(() => history.push(`/dashboard`))
-    //   .catch(setError);
+  
+    updateDish(updatedDishOrder, abortController.signal)
+      .then(() => history.push(`/dashboard`))
+      .catch(setError);
+
+    return () => abortController.abort();
   }
 
   function cancelHandler() {
