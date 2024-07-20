@@ -11,9 +11,9 @@ function Header() {
   return (
     <div className="jumbotron jumbotron-fluid text-white mb-0" style={style}>
       <div className="container">
-        <h1 className="display-1">GrubDash</h1>
+        <h1 className="display-1">Meal Deal</h1>
         <p className="lead">
-          The best restaurants near you deliver with <em>GrubDash</em>!
+          The best restaurants near you deliver with <em>Meal Deal</em>!
         </p>
       </div>
     </div>

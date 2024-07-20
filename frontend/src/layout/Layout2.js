@@ -37,7 +37,7 @@ function Layout() {
 
       const dishes = previousOrder.dishes.map((dish) => ({
         ...dish,
-        quantity: dish.quantity + (dish.id === newDish.id),
+        quantity: dish.quantity++
       }));
 
       return {
