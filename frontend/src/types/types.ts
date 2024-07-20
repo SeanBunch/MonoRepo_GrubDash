@@ -39,8 +39,8 @@ export interface OrderFormProps {
   setOrder?: React.Dispatch<React.SetStateAction<Order>>;
   onSubmit?: (order: Order) => void;
   children?: React.ReactNode;
-  readOnly: boolean;
-  showStatus: boolean;
+  readOnly?: boolean;
+  showStatus?: boolean;
 };
 
 export interface FetchError extends Error {
@@ -57,4 +57,21 @@ export type DishFormProps = {
 export interface DishCardProps {
   dish: Dish;
   children: React.ReactNode;
+};
+
+export interface OrderCreateProps {
+  order: Order;
+  setOrder: React.Dispatch<React.SetStateAction<Order>>;
+  onSubmit: (order: Order) => void;
+};
+
+export interface ErrorType {
+  message: string;
+};
+
+export interface OrderFormDishProps {
+  setDishQuantity: (dishId: number, quantity: number) => void;
+  deleteDish: (dishId: number) => void;
+  readOnly: boolean;
+  dish: Dish;
 };
