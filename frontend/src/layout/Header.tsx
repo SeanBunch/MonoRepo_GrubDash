@@ -13,7 +13,7 @@ function Header() {
       <div className="container">
         <h1 className="display-1">Meal Deal</h1>
         <p className="lead">
-          Delivering flavor that will papow your tastebuds exlusivly on <em>Meal Deal</em>!
+          Delivering flavor that will papow your taste buds exclusively on <em>Meal Deal</em>!
         </p>
       </div>
     </div>
