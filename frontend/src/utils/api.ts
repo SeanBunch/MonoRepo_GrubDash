@@ -1,5 +1,6 @@
 import { Order, Dish } from "../types/types";
 import { FetchError } from "../types/types";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
@@ -8,6 +9,29 @@ const API_BASE_URL =
 const headers = new Headers();
 headers.append("Content-Type", "application/json");
 
+// ==========================================================================
+// ==========================================================================
+// ==========================================================================
+// ==========================================================================
+
+export const api = createApi({
+  reducerPath: "api",
+  baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL, headers }),
+  endpoints: (builder) => ({
+    listDishes: builder.query<Dish[], void>({
+      query: () => "/dishes",
+    }),
+  }),
+});
+
+export const { useListDishesQuery } = api;
+
+
+
+// ==========================================================================
+// ==========================================================================
+// ==========================================================================
+// ==========================================================================
 async function fetchJson<T>(url: string, options: RequestInit): Promise<T> {
   try {
     const response = await fetch(url, options);
