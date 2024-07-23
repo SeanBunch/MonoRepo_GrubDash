@@ -4,7 +4,12 @@ import { Dish, DishFormProps } from "../types/types";
 function DishForm({
     onSubmit,
     onCancel,
-    initialState = { id: 0, name: "", description: "", price: 0, image_url: "", quantity: 0, status: "", mobileNumber: "" },
+    initialState = { 
+      id: 0, name: "", 
+      description: "", 
+      price: 0, image_url: "", 
+      quantity: 0, status: "", 
+     },
   }: DishFormProps) {
 
   const [dish, setDish] = useState<Dish>(initialState);

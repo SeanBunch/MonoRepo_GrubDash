@@ -17,7 +17,6 @@ function DishView() {
     image_url: "",
     quantity: 0,
     status: "",
-    mobileNumber: "",
 });
   const [error, setError] = useState(null);
 
