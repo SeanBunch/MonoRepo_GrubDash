@@ -1,28 +1,76 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Dish, DishFormProps } from "../types/types";
+import { useUpdateDishMutation, useCreateDishMutation } from "../utils/api";
 
-function DishForm({
-    onSubmit,
-    onCancel,
-    initialState = { 
-      id: 0, name: "", 
-      description: "", 
-      price: 0, image_url: "", 
-      quantity: 0, status: "", 
-     },
-  }: DishFormProps) {
+function DishForm({initialState}: DishFormProps) {
+    // ===========================================================================
+    // ===========================================================================
+    // ===========================================================================
+    const [updateDish, { error: updateError }] = useUpdateDishMutation();
+    const [createDish, { error: createError }] = useCreateDishMutation();
+    const [newDish, setNewDish] = useState<Dish>(initialState.data);
+    const history = useHistory();
 
-  const [dish, setDish] = useState<Dish>(initialState);
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = event.target;
-    setDish((previousDish) => ({
-      ...previousDish,
-      [name]: name === "price" ? parseInt(value, 10) : value,
-      ...(name === "name" && {
-        image_url: `https://dummyimage.com/360x360/292929/e3e3e3&text=${encodeURI(value.trim())}`,
-      }),
-    }));
-  };
+
+    async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
+      event.preventDefault();
+      event.stopPropagation();
+      try {
+        if (newDish.id) {
+          await updateDish(newDish);
+        } else {
+          await createDish(newDish);
+        }
+        history.push(`/dashboard`);
+      } catch (error) {
+        console.log(updateError, createError, error);
+      }
+    }
+    const changeHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = event.target;
+      setNewDish((previousDish) => ({
+        ...previousDish,
+        [name]: name === "price" ? parseInt(value, 10) : value,
+        ...(name === "name" && {
+          image_url: `https://dummyimage.com/360x360/292929/e3e3e3&text=${encodeURI(value.trim())}`,
+        }),
+      }));
+    };
+
+    function cancelHandler() {
+      history.goBack();
+    };
+
+
+
+
+    // const changeHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    //   const { name, value } = event.target;
+    //   setNewDish((previousDish: Dish | null) => {
+    //     if (previousDish) {
+    //       return { ...previousDish, [name]: value };
+    //     } else {
+    //       return { id: 0, name: "", description: "", price: 0, image_url: "", quantity: 0 };
+    //     }
+    //   });
+    //   }
+
+    // ===========================================================================
+    // ===========================================================================
+    // ===========================================================================
+
+  // const [dish, setDish] = useState<Dish>(initialState);
+  // const changeHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  //   const { name, value } = event.target;
+  //   setDish((previousDish) => ({
+  //     ...previousDish,
+  //     [name]: name === "price" ? parseInt(value, 10) : value,
+  //     ...(name === "name" && {
+  //       image_url: `https://dummyimage.com/360x360/292929/e3e3e3&text=${encodeURI(value.trim())}`,
+  //     }),
+  //   }));
+  // };
 
 //   function nameChangeHandler({ target: { name, value } }) {
 //     setDish((previousDish) => ({
@@ -48,11 +96,11 @@ function DishForm({
 //     }));
 //   }
 
-  function submitHandler(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    event.stopPropagation();
-    onSubmit(dish);
-  }
+  // function submitHandler(event: React.FormEvent<HTMLFormElement>) {
+  //   event.preventDefault();
+  //   event.stopPropagation();
+  //   onSubmit(dish);
+  // }
 
   return (
     <>
@@ -65,7 +113,7 @@ function DishForm({
               id="name"
               name="name"
               className="form-control"
-              value={dish.name}
+              value={newDish?.name}
               required={true}
               placeholder="Dish Name"
               onChange={changeHandler}
@@ -80,7 +128,7 @@ function DishForm({
               rows={4}
               required={true}
               placeholder="Brief description of the dish"
-              value={dish.description}
+              value={newDish?.description}
               onChange={changeHandler}
             />
           </div>
@@ -91,7 +139,7 @@ function DishForm({
               id="imageUrl"
               name="image_url"
               className="form-control"
-              value={dish.image_url}
+              value={newDish?.image_url}
               required={true}
               placeholder="Image URL"
               onChange={changeHandler}
@@ -110,7 +158,7 @@ function DishForm({
                 className="form-control"
                 aria-label="Price (to the nearest dollar)"
                 required={true}
-                value={dish.price}
+                value={newDish?.price}
                 onChange={changeHandler}
               />
               <div className="input-group-append">
@@ -121,7 +169,7 @@ function DishForm({
           <button
             type="button"
             className="btn btn-secondary mr-2"
-            onClick={onCancel}
+            onClick={cancelHandler}
           >
             <span className="oi oi-x" /> Cancel
           </button>
