@@ -1,25 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { listDishes, listOrders } from "../utils/api";
+import { listOrders } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import { Order, Dish } from "../types/types";
+import { Order } from "../types/types";
 
 import { useListDishesQuery } from "../utils/api";
 
 
 function Dashboard() {
     const [orders, setOrders] = useState<Order[]>([]);
-    const [dishes, setDishes] = useState<Dish[]>([]);
+    // const [dishes, setDishes] = useState<Dish[]>([]);
     const [ordersError, setOrdersError] = useState<Error | null>(null);
-    const [dishesError, setDishesError] = useState<Error | null>(null);
-    const { data } = useListDishesQuery();
+    // const [dishesError, setDishesError] = useState<Error | null>(null);
+//  ===========================================================================
+//  ===========================================================================
+//  ===========================================================================
+
+
+
+const { data, error } = useListDishesQuery();
+
+
+
+//  ===========================================================================
+//  ===========================================================================
+// ===========================================================================
+
   useEffect(loadDashboard, []);
-  console.log(data, "from the dashboard");
+  
   function loadDashboard() {
     const abortController = new AbortController();
 
     listOrders(abortController.signal).then(setOrders).catch(setOrdersError);
-    listDishes(abortController.signal).then(setDishes).catch(setDishesError);
+    // listDishes(abortController.signal).then(setDishes).catch(setDishesError);
 
     return () => abortController.abort();
   }
@@ -49,7 +62,7 @@ function Dashboard() {
     );
   });
 
-  const DishesList = dishes.map((dish, index) => {
+  const DishesList = data?.data.map((dish, index) => {
     return (
       <tr key={dish.id}>
         <td>{index + 1}</td>
@@ -104,7 +117,11 @@ function Dashboard() {
             <div className="d-md-flex mb-3">
               <h4 className="box-title mb-0">Dishes</h4>
             </div>
-            <ErrorAlert error={dishesError} />
+            {
+
+              error && "status" in error ? <div className="alert alert-danger m-2">Error: {error.status}</div> : null
+             
+            }
             <Link to="/dishes/new" className="btn btn-primary mr-2">
               <span className="oi oi-plus" /> Create Dish
             </Link>
