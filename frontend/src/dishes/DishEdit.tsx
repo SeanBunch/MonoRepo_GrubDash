@@ -54,10 +54,8 @@ const { data: dish, error } = useReadDishQuery(dishId);
     <main>
       <h1>Edit Dish</h1>
       {
-
-error && "status" in error ? <div className="alert alert-danger m-2">Error: {error.status}</div> : null
-
-}
+      error && "status" in error ? <div className="alert alert-danger m-2">Error: {error.status}</div> : null
+      }
       {/* <ErrorAlert error={error} /> */}
       {child}
     </main>
