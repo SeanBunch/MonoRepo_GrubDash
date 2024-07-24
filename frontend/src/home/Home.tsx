@@ -1,42 +1,123 @@
-import React, { useEffect, useState } from "react";
-import { listDishes } from "../utils/api";
+// import React, { useEffect, useState } from "react";
+// import { listDishes, useListDishesQuery } from "../utils/api";
+// import DishCard from "./DishCard";
+// import ErrorAlert from "../layout/ErrorAlert";
+// import { Dish, HomeProps } from "../types/types";
+
+
+//  ===========================================================================
+//  ===========================================================================
+//  ===========================================================================
+import React from "react";
+import { useListDishesQuery } from "../utils/api";
 import DishCard from "./DishCard";
-import ErrorAlert from "../layout/ErrorAlert";
 import { Dish, HomeProps } from "../types/types";
 
 
-function Home({ addToCart: addToCart }: HomeProps) {
-  const [dishes, setDishes] = useState<Dish[]>([]);
-  const [error, setError] = useState(null);
 
-  useEffect(loadDishes, []);
-  
-  function loadDishes() {
-    const abortController = new AbortController();
-    setError(null);
-    listDishes(abortController.signal).then(setDishes).catch(setError);
-    return () => abortController.abort();
+
+function Home({ addToCart: addToCart }: HomeProps) {
+const { data: dishes = [], error,isSuccess, isError, isLoading } = useListDishesQuery();
+
+if (isLoading) {
+  return <div>Loading...</div>;
+}
+
+if (isError) {
+  if (isError) {
+    if ('status' in error) {
+      return <div className="alert alert-danger m-2">Error: {error.status}</div>;
+    } else {
+      return <div className="alert alert-danger m-2">Error: An unknown error occurred.</div>;
+    }
   }
-  
-  const cards = dishes[0] ? ( dishes.map((dish) => (
+}
+
+if (!isSuccess) {
+  return <div className="alert alert-danger m-2">Something went wrong</div>;
+}
+
+return (
+  <main> 
+  <div className="row">
+      {(dishes as Dish[]).map((dish) => (
     <DishCard key={dish.id} dish={dish}>
       <button className="btn btn-primary" onClick={() => addToCart(dish)}>
         <span className="oi oi-plus" /> Add to cart
       </button>
     </DishCard>
-  ))) : (
-    <div>
-      <h1>Loading...</h1>
-      <p>The website is hosted on a free render.com account. The backend takes up to 1 minute to spin up. Thank you for visiting!</p>
-    </div>
-  );
+  ))
+         
+      }
+  </div>
+  </main>
+);
 
-  return (
-    <main>
-      <ErrorAlert error={error} />
-      <div className="row">{cards}</div>
-    </main>
-  );
-}
+
+
+
+// const cards = isLoading ? (
+//   <div>
+//     <h1>Loading...</h1>
+//     <p>The website is hosted on a free render.com account. The backend takes up to 1 minute to spin up. Thank you for visiting!</p>
+//   </div>
+// ) : (
+//   (dishes as Dish[]).map((dish) => (
+//     <DishCard key={dish.id} dish={dish}>
+//       <button className="btn btn-primary" onClick={() => addToCart(dish)}>
+//         <span className="oi oi-plus" /> Add to cart
+//       </button>
+//     </DishCard>
+//   ))
+// );
+
+// return (
+//   <main>
+//      {
+//      error && "status" in error ? <div className="alert alert-danger m-2">Error: {error.status}</div> : null
+//      }
+
+//     <div className="row">{cards}</div>
+//   </main>
+// );
+};
+
+
+//  ===========================================================================
+//  ===========================================================================
+//  ===========================================================================
+
+  // const [dishes, setDishes] = useState<Dish[]>([]);
+  // const [error, setError] = useState(null);
+
+  // useEffect(loadDishes, []);
+  
+  // function loadDishes() {
+  //   const abortController = new AbortController();
+  //   setError(null);
+  //   listDishes(abortController.signal).then(setDishes).catch(setError);
+  //   return () => abortController.abort();
+  // }
+  
+  // const cards = dishes[0] ? ( dishes.map((dish) => (
+  //   <DishCard key={dish.id} dish={dish}>
+  //     <button className="btn btn-primary" onClick={() => addToCart(dish)}>
+  //       <span className="oi oi-plus" /> Add to cart
+  //     </button>
+  //   </DishCard>
+  // ))) : (
+  //   <div>
+  //     <h1>Loading...</h1>
+  //     <p>The website is hosted on a free render.com account. The backend takes up to 1 minute to spin up. Thank you for visiting!</p>
+  //   </div>
+  // );
+
+  // return (
+  //   <main>
+  //     <ErrorAlert error={error} />
+  //     <div className="row">{cards}</div>
+  //   </main>
+  // );
+// }
 
 export default Home;
