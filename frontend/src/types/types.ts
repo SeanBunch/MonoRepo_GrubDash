@@ -6,7 +6,7 @@ export interface Dish {
   image_url: string;
   quantity: number;
   status?: string;
-  mobileNumber?: string;
+  data?: any;
 };
 
 export type Order = {
@@ -24,6 +24,7 @@ export interface RouteParams {
 
 export interface ErrorAlertProps {
   error: { message: string } | null;
+  
 };
 
 export type HomeProps = {
@@ -48,10 +49,8 @@ export interface FetchError extends Error {
   response?: Response;
 };
 
-export type DishFormProps = {
-  onSubmit: (dish: Dish) => void;
-  onCancel: () => void;
-  initialState?:Dish;
+export interface DishFormProps {
+  initialState: Dish;
 };
 
 export interface DishCardProps {
