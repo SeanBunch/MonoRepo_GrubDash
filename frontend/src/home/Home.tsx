@@ -11,13 +11,13 @@
 import React from "react";
 import { useListDishesQuery } from "../utils/api";
 import DishCard from "./DishCard";
-import { Dish, HomeProps } from "../types/types";
+import { HomeProps } from "../types/types";
 
 
 
 
 function Home({ addToCart: addToCart }: HomeProps) {
-const { data: dishes = [], error,isSuccess, isError, isLoading } = useListDishesQuery();
+const { data: dishes, error, isSuccess, isError, isLoading } = useListDishesQuery();
 
 if (isLoading) {
   return <div>Loading...</div>;
@@ -40,7 +40,7 @@ if (!isSuccess) {
 return (
   <main> 
   <div className="row">
-      {(dishes as Dish[]).map((dish) => (
+      {dishes.data.map((dish) => (
     <DishCard key={dish.id} dish={dish}>
       <button className="btn btn-primary" onClick={() => addToCart(dish)}>
         <span className="oi oi-plus" /> Add to cart
