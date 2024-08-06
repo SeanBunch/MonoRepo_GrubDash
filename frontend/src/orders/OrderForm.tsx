@@ -1,16 +1,20 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import OrderFormDish from "./OrderFormDish";
-import { OrderFormProps, Order } from "../types/types";
+import { OrderFormProps, Order, ErrorType } from "../types/types";
+// import { createOrder } from "../utils/api";
+import { useHistory } from "react-router-dom";
+import { useCreateOrderMutation } from "../utils/api";
+
 
 function OrderForm({ 
     order,
     setOrder,
-    onSubmit,
-    children,
+    setError,
     readOnly = false,
     showStatus = false
 }: OrderFormProps) {
-
+  
+  const history = useHistory();
   const [orderOnSub, setorderOnSub] = useState<Order>({
     id: order.id,
     deliverTo: order.deliverTo,
@@ -18,24 +22,52 @@ function OrderForm({
     status: order.status,
     dishes: order.dishes,
   });
+  const [createOrder, { error: createError }] = useCreateOrderMutation();
+  
   function changeHandler({ target: { name, value } }: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setorderOnSub((previousOrder) => ({
       ...previousOrder,
       [name]: value,
     }));
     
-  }
-  
-  function submitHandler(event: FormEvent<HTMLFormElement>) {
-    const abortController = new AbortController();
-    event.preventDefault();
-    event.stopPropagation();
-    if (onSubmit) {
-      onSubmit(orderOnSub);
-    }
+  };
 
-    return () => abortController.abort();
+  async function submitHandler(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+    event.stopPropagation();
+    try {
+      if (orderOnSub) {
+        const newOrder = await createOrder(orderOnSub).unwrap();
+        console.log(newOrder)
+        history.push(`/orders/${newOrder.id}/confirmed`);
+        
+      }
+
+    } catch (error) {
+      if(setError){
+        setError(error as ErrorType);
+      }
+      console.log(createError, error);
+    }
   }
+
+
+  // function onSubmit(newOrder: Order) {
+  //   if(setOrder){
+  //     history.push(`/orders/${newOrder.id}/confirmed`);
+  //   }
+  // }
+
+
+  // function submitHandler(event: FormEvent<HTMLFormElement>) {
+  //   const abortController = new AbortController();
+  //   event.preventDefault();
+  //   event.stopPropagation();
+  //   if (onSubmit) {
+  //       createOrder(orderOnSub, abortController.signal).then(onSubmit).catch(setError);
+  //   }
+  //   return () => abortController.abort();
+  // }
   
   function setDishQuantity(dishId: number, quantity: number) {
     if (setOrder) {
@@ -88,7 +120,9 @@ function deleteDish(dishId: number) {
     (sum, dish) => sum + dish.price * (dish.quantity),
     0
   );
-
+  function onCancel() {
+    history.goBack();
+  }
   return (
     <form onSubmit={submitHandler}>
       <fieldset className="mb-2">
@@ -161,7 +195,26 @@ function deleteDish(dishId: number) {
           </h3>
         </div>
       </fieldset>
-      <div className="form-row">{children}</div>
+      <div className="form-row">
+      <div className="col-auto">
+          <button
+            type="button"
+            className="btn btn-secondary mr-2"
+            onClick={onCancel}
+          >
+            <span className="oi oi-x" /> Cancel
+          </button>
+        </div>
+        <div className="col-auto">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={order.dishes.length === 0}
+          >
+            <span className="oi oi-check" /> Submit
+          </button>
+        </div>
+      </div>
     </form>
   );
 }

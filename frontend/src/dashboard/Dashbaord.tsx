@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
+// import { Link } from "react-router-dom";
+// import { listOrders, useListOrdersQuery } from "../utils/api";
+// import ErrorAlert from "../layout/ErrorAlert";
+// import { Order } from "../types/types";
+
+
+
+
+import { useListDishesQuery, useListOrdersQuery } from "../utils/api";
+import React from "react";
 import { Link } from "react-router-dom";
-import { listOrders } from "../utils/api";
-import ErrorAlert from "../layout/ErrorAlert";
-import { Order } from "../types/types";
-
-import { useListDishesQuery } from "../utils/api";
-
 
 function Dashboard() {
-    const [orders, setOrders] = useState<Order[]>([]);
+    // const [orders, setOrders] = useState<Order[]>([]);
     // const [dishes, setDishes] = useState<Dish[]>([]);
-    const [ordersError, setOrdersError] = useState<Error | null>(null);
+    // const [ordersError, setOrdersError] = useState<Error | null>(null);
     // const [dishesError, setDishesError] = useState<Error | null>(null);
 //  ===========================================================================
 //  ===========================================================================
@@ -18,26 +22,26 @@ function Dashboard() {
 
 
 
-const { data, error } = useListDishesQuery();
 
-
-
-//  ===========================================================================
-//  ===========================================================================
+const { data: dishesData, error } = useListDishesQuery();
+const { data: ordersData, error: ordersError } = useListOrdersQuery();
+// ===========================================================================
+// ===========================================================================
 // ===========================================================================
 
-  useEffect(loadDashboard, []);
+
+// useEffect(loadDashboard, []);
   
-  function loadDashboard() {
-    const abortController = new AbortController();
+  // function loadDashboard() {
+  //   const abortController = new AbortController();
 
-    listOrders(abortController.signal).then(setOrders).catch(setOrdersError);
-    // listDishes(abortController.signal).then(setDishes).catch(setDishesError);
+  //   // listOrders(abortController.signal).then(setOrders).catch(setOrdersError);
+  //   // listDishes(abortController.signal).then(setDishes).catch(setDishesError);
 
-    return () => abortController.abort();
-  }
+  //   return () => abortController.abort();
+  // }
 
-  const ordersList = orders.map((order, index) => {
+  const ordersList = ordersData?.data.map((order, index) => {
     const total = order.dishes.reduce(
       (sum, dish) => sum + dish.price * dish.quantity,
       0
@@ -62,7 +66,7 @@ const { data, error } = useListDishesQuery();
     );
   });
 
-  const DishesList = data?.data.map((dish, index) => {
+  const DishesList = dishesData?.data.map((dish, index) => {
     return (
       <tr key={dish.id}>
         <td>{index + 1}</td>
@@ -92,7 +96,18 @@ const { data, error } = useListDishesQuery();
             <div className="d-md-flex mb-3">
               <h4 className="box-title mb-0">Orders</h4>
             </div>
-            <ErrorAlert error={ordersError} />
+            {error && "status" in error ?
+             <div className="alert alert-danger m-2">
+              Error: {error.status}
+             </div> 
+        : null}
+        {ordersError && "status" in ordersError ?
+             <div className="alert alert-danger m-2">
+              Error: {ordersError.status}
+             </div> 
+        : null}
+      
+            {/* <ErrorAlert error={ordersError} /> */}
             <div className="table-responsive">
               <table className="table no-wrap">
                 <thead>

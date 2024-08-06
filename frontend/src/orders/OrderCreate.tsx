@@ -1,33 +1,33 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { createOrder } from "../utils/api";
+// import { useHistory } from "react-router-dom";
+// import { createOrder } from "../utils/api";
 import OrderForm from "./OrderForm";
 import ErrorAlert from "../layout/ErrorAlert";
-import { OrderCreateProps, Order, ErrorType } from "../types/types";
+import { OrderCreateProps, ErrorType } from "../types/types";
 
-function OrderCreate({ order, setOrder, onSubmit }: OrderCreateProps) {
-  const history = useHistory();
+function OrderCreate({ order, setOrder }: OrderCreateProps) {
+  // const history = useHistory();
   const [error, setError] = useState<ErrorType | null>(null);
 
-  function submitHandler(order: Order) {
-    setError(null);
-    const abortController = new AbortController();
+  // function submitHandler(order: Order) {
+  //   setError(null);
+  //   const abortController = new AbortController();
 
-    createOrder(order, abortController.signal).then(onSubmit).catch(setError);
+  //   createOrder(order, abortController.signal).then(onSubmit).catch(setError);
 
-    return () => abortController.abort();
-  }
-
-  function onCancel() {
-    history.goBack();
-  }
+  //   return () => abortController.abort();
+  // }
+  
+  // function onCancel() {
+  //   history.goBack();
+  // }
 
   return (
     <main>
       <h1>Create Order</h1>
       <ErrorAlert error={error} />
-      <OrderForm order={order} setOrder={setOrder} onSubmit={submitHandler}>
-        <div className="col-auto">
+      <OrderForm order={order} setOrder={setOrder} setError={setError} />
+        {/* <div className="col-auto">
           <button
             type="button"
             className="btn btn-secondary mr-2"
@@ -44,8 +44,8 @@ function OrderCreate({ order, setOrder, onSubmit }: OrderCreateProps) {
           >
             <span className="oi oi-check" /> Submit
           </button>
-        </div>
-      </OrderForm>
+        </div> */}
+      {/* </OrderForm> */}
     </main>
   );
 }

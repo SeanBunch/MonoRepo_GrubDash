@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import Header from "./Header";
 import NotFound from "./NotFound";
 import Menu from "./Menu";
-import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+// import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
+
 import Home from "../home/Home";
 import OrderCreate from "../orders/OrderCreate";
 import OrderEdit from "../orders/OrderEdit";
@@ -21,7 +23,7 @@ const initialState = {
 };
 
 function Layout() {
-  const history = useHistory();
+  // const history = useHistory();
   const [order, setOrder] = useState<Order>({ ...initialState });
 
   function addToCart(newDish: Dish) {
@@ -49,10 +51,10 @@ function Layout() {
     });
   }
 
-  function onSubmit(newOrder: Order) {
-    setOrder({ ...initialState });
-    history.push(`/orders/${newOrder.id}/confirmed`);
-  }
+  // function onSubmit(newOrder: Order) {
+  //   setOrder({ ...initialState });
+  //   history.push(`/orders/${newOrder.id}/confirmed`);
+  // }
 
   return (
     <>
@@ -72,7 +74,6 @@ function Layout() {
             <OrderCreate
               order={order}
               setOrder={setOrder}
-              onSubmit={onSubmit}
             />
           </Route>
           <Route path="/orders/:orderId/confirmed">

@@ -24,7 +24,6 @@ export interface RouteParams {
 
 export interface ErrorAlertProps {
   error: { message: string } | null;
-  
 };
 
 export type HomeProps = {
@@ -42,6 +41,7 @@ export interface OrderFormProps {
   children?: React.ReactNode;
   readOnly?: boolean;
   showStatus?: boolean;
+  setError?: React.Dispatch<React.SetStateAction<ErrorType | null>>;
 };
 
 export interface FetchError extends Error {
@@ -61,7 +61,6 @@ export interface DishCardProps {
 export interface OrderCreateProps {
   order: Order;
   setOrder: React.Dispatch<React.SetStateAction<Order>>;
-  onSubmit: (order: Order) => void;
 };
 
 export interface ErrorType {
