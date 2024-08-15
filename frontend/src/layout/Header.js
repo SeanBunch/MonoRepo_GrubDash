@@ -13,7 +13,7 @@ function Header() {
       <div className="container">
         <h1 className="display-1">GrubDash</h1>
         <p className="lead">
-          The best restaurants near you deliver with <em>GrubDash</em>!
+          Meals that papow your taste buds, delivered with <em>GrubDash</em>!
         </p>
       </div>
     </div>
