@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { readOrder } from "../utils/api";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
 import OrderForm from "./OrderForm";
 import { RouteParams, Order } from "../types/types";
@@ -16,7 +16,6 @@ const initialState = {
 
 
 function OrderConfirmed() {
-  const history = useHistory();
   const { orderId } = useParams<RouteParams>();
 
   const [order, setOrder] = useState<Order | null>({...initialState});
@@ -31,22 +30,10 @@ function OrderConfirmed() {
     return () => abortController.abort();
   }
 
-  function cancelHandler() {
-    history.push("/");
-  }
+
 
   const child = order ? (
-    <OrderForm order={order} readOnly={true} showStatus={true}>
-      <div className="col-auto">
-        <button
-          type="button"
-          className="btn btn-secondary mr-2"
-          onClick={cancelHandler}
-        >
-          <span className="oi oi-home" /> Home
-        </button>
-      </div>
-    </OrderForm>
+    <OrderForm order={order} readOnly={true} showStatus={true} />
   ) : (
     <p>Loading...</p>
   );

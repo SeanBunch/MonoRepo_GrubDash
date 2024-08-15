@@ -38,7 +38,6 @@ function OrderForm({
     try {
       if (orderOnSub) {
         const newOrder = await createOrder(orderOnSub).unwrap();
-        console.log(newOrder)
         history.push(`/orders/${newOrder.id}/confirmed`);
         
       }

@@ -19,6 +19,7 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL, headers }),
   tagTypes: ["Dishes", "Orders"],
   endpoints: (builder) => ({
+    // builder.query<ResultType, QueryArg>()
     listDishes: builder.query<{data: Dish[]}, void>({
       query: () => '/dishes',
       providesTags: (result) =>
