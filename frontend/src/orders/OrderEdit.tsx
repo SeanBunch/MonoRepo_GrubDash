@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { deleteOrder, readOrder, updateOrder } from "../utils/api";
+import { deleteOrder } from "../utils/api";
 import OrderForm from "./OrderForm";
 import ErrorAlert from "../layout/ErrorAlert";
-import { RouteParams, Order, ErrorType } from "../types/types";
-
- 
+import { RouteParams, ErrorType } from "../types/types";
+import { useReadOrderQuery } from "../utils/api";
 
 function OrderEdit() {
   const history = useHistory();
@@ -18,27 +17,32 @@ function OrderEdit() {
   //     dishes: order.dishes,
   // };
   
-  const [order, setOrder] = useState<Order | null>(null);
+  // const [order, setOrder] = useState<Order | null>(null);
   const [error, setError] = useState<ErrorType | null>(null);
-  useEffect(() => {
-    const abortController = new AbortController();
-    
-    readOrder(orderId, abortController.signal)
-    .then((order) => setOrder(order))
-    .catch(setError);
-    
-    return () => abortController.abort();
-  }, [orderId]);
-  
-  function submitHandler(updatedOrder: Order) {
-    const abortController = new AbortController();
-    
-    updateOrder(updatedOrder, abortController.signal)
-      .then((savedOrder) => history.push(`/orders/${savedOrder.id}/confirmed`))
-      .catch(setError);
+  const { data: ordersData } = useReadOrderQuery(orderId);
 
-    return () => abortController.abort();
-  }
+
+  // useEffect(() => {
+  //   const abortController = new AbortController();
+    
+  //   readOrder(orderId, abortController.signal)
+  //   .then((order) => setOrder(order))
+  //   .catch(setError);
+    
+  //   return () => abortController.abort();
+  // }, [orderId]);
+  //============================================================================
+  //============================================================================
+  //============================================================================
+  // function submitHandler(updatedOrder: Order) {
+  //   const abortController = new AbortController();
+    
+  //   updateOrder(updatedOrder, abortController.signal)
+  //     .then((savedOrder) => history.push(`/orders/${savedOrder.id}/confirmed`))
+  //     .catch(setError);
+
+  //   return () => abortController.abort();
+  // }
 
   function cancelHandler() {
     history.goBack();
@@ -50,19 +54,19 @@ function OrderEdit() {
     const confirmed = window.confirm(
       "Delete this order?\n\nYou will not be able to recover it."
     );
-    if (confirmed && order) {
-      deleteOrder(order.id, abortController.signal)
+    if (confirmed && ordersData && ordersData.id) {
+      deleteOrder(ordersData.id, abortController.signal)
         .then(() => history.push("/dashboard"))
         .catch(setError);
     }
   }
 
-  const child = order ? (
+  const child = ordersData ? (
     <OrderForm
-      order={order}
-      setOrder={setOrder as React.Dispatch<React.SetStateAction<Order>>}
-      onSubmit={submitHandler}
-      readOnly={order.status === "delivered"}
+    initialState={ordersData}
+      // setOrder={setOrder as React.Dispatch<React.SetStateAction<Order>>}
+      // onSubmit={submitHandler}
+      readOnly={ordersData.status === "delivered"}
       showStatus={true}
     >
       <div className="mr-auto">
@@ -76,18 +80,18 @@ function OrderEdit() {
         <button
           type="submit"
           className="btn btn-primary"
-          disabled={order.status === "delivered" || order.dishes.length === 0}
+          disabled={ordersData.status === "delivered" || ordersData.dishes.length === 0}
         >
           <span className="oi oi-check" /> Submit
         </button>
       </div>
       <div className="col-auto">
-        {order.status === "pending" ? (
+        {ordersData.status === "pending" ? (
           <button
             type="button"
             className="btn btn-danger"
             title="Delete Order"
-            disabled={order.status !== "pending"}
+            disabled={ordersData.status !== "pending"}
             onClick={deleteHandler}
           >
             <span className="oi oi-trash" />
@@ -99,7 +103,7 @@ function OrderEdit() {
               type="button"
               className="btn btn-danger"
               title="Delete Order"
-              disabled={order.status !== "pending"}
+              disabled={ordersData.status !== "pending"}
               onClick={deleteHandler}
             >
               <span className="oi oi-trash" />

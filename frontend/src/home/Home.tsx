@@ -11,13 +11,15 @@
 import React from "react";
 import { useListDishesQuery } from "../utils/api";
 import DishCard from "./DishCard";
-import { HomeProps } from "../types/types";
+// import { HomeProps } from "../types/types";
+import { addToCart } from "../orders/cartSlice";
+import { useDispatch } from "react-redux";
 
 
 
-
-function Home({ addToCart: addToCart }: HomeProps) {
+function Home() {
 const { data: dishes, error, isSuccess, isError, isLoading } = useListDishesQuery();
+const dispatch = useDispatch();
 
 if (isLoading) {
   return <div>Loading...</div>;
@@ -42,7 +44,7 @@ return (
   <div className="row">
       {dishes.data.map((dish) => (
     <DishCard key={dish.id} dish={dish}>
-      <button className="btn btn-primary" onClick={() => addToCart(dish)}>
+      <button className="btn btn-primary" onClick={() => dispatch(addToCart(dish))}>
         <span className="oi oi-plus" /> Add to cart
       </button>
     </DishCard>

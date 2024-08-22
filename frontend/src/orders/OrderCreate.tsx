@@ -3,11 +3,20 @@ import React, { useState } from "react";
 // import { createOrder } from "../utils/api";
 import OrderForm from "./OrderForm";
 import ErrorAlert from "../layout/ErrorAlert";
-import { OrderCreateProps, ErrorType } from "../types/types";
+import { ErrorType } from "../types/types";
+import { useSelector } from "react-redux";
 
-function OrderCreate({ order, setOrder }: OrderCreateProps) {
+function OrderCreate() {
   // const history = useHistory();
   const [error, setError] = useState<ErrorType | null>(null);
+  const cart = useSelector((state: any) => state.cart);
+
+  const initialState = {
+  deliverTo: "",
+  mobileNumber: "",
+  status: "pending",
+  dishes: cart.dishes,
+};
 
   // function submitHandler(order: Order) {
   //   setError(null);
@@ -26,7 +35,7 @@ function OrderCreate({ order, setOrder }: OrderCreateProps) {
     <main>
       <h1>Create Order</h1>
       <ErrorAlert error={error} />
-      <OrderForm order={order} setOrder={setOrder} setError={setError} />
+      <OrderForm initialState={initialState} setError={setError} />
         {/* <div className="col-auto">
           <button
             type="button"

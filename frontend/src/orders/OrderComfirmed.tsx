@@ -33,7 +33,7 @@ function OrderConfirmed() {
 
 
   const child = order ? (
-    <OrderForm order={order} readOnly={true} showStatus={true} />
+    <OrderForm initialState={order} readOnly={true} showStatus={true} />
   ) : (
     <p>Loading...</p>
   );
