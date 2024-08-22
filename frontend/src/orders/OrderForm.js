@@ -106,7 +106,7 @@ function deleteDish(dishId) {
           </div>
         )}
         <div className="form-group">
-          <label htmlFor="deliverTo">Delivery address</label>
+          <label htmlFor="deliverTo">Delivery Address</label>
           <input
             type="text"
             className="form-control"
