@@ -10,7 +10,7 @@ export interface Dish {
 };
 
 export type Order = {
-  id: number;
+  id?: number;
   deliverTo: string;
   mobileNumber: string;
   status: string;
@@ -27,7 +27,7 @@ export interface ErrorAlertProps {
 };
 
 export type HomeProps = {
-  addToCart: (dish: Dish) => void;
+  addToCart?: (dish: Dish) => void;
 };
 
 export interface MenuProps {
@@ -35,9 +35,9 @@ export interface MenuProps {
 };
 
 export interface OrderFormProps {
-  order: Order;
-  setOrder?: React.Dispatch<React.SetStateAction<Order>>;
-  onSubmit?: (order: Order) => void;
+  initialState: Order;
+  // setOrder?: React.Dispatch<React.SetStateAction<Order>>;
+  // onSubmit?: (order: Order) => void;
   children?: React.ReactNode;
   readOnly?: boolean;
   showStatus?: boolean;
@@ -59,8 +59,8 @@ export interface DishCardProps {
 };
 
 export interface OrderCreateProps {
-  order: Order;
-  setOrder: React.Dispatch<React.SetStateAction<Order>>;
+  order?: Order;
+  setOrder?: React.Dispatch<React.SetStateAction<Order>>;
 };
 
 export interface ErrorType {
