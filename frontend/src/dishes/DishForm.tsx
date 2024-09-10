@@ -4,12 +4,9 @@ import { Dish, DishFormProps } from "../types/types";
 import { useUpdateDishMutation, useCreateDishMutation } from "../utils/api";
 
 function DishForm({initialState}: DishFormProps) {
-    // ===========================================================================
-    // ===========================================================================
-    // ===========================================================================
     const [updateDish, { error: updateError }] = useUpdateDishMutation();
     const [createDish, { error: createError }] = useCreateDishMutation();
-    const [newDish, setNewDish] = useState<Dish>(initialState.data);
+    const [newDish, setNewDish] = useState<Dish>(initialState);
     const history = useHistory();
 
 
@@ -41,66 +38,6 @@ function DishForm({initialState}: DishFormProps) {
     function cancelHandler() {
       history.goBack();
     };
-
-
-
-
-    // const changeHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    //   const { name, value } = event.target;
-    //   setNewDish((previousDish: Dish | null) => {
-    //     if (previousDish) {
-    //       return { ...previousDish, [name]: value };
-    //     } else {
-    //       return { id: 0, name: "", description: "", price: 0, image_url: "", quantity: 0 };
-    //     }
-    //   });
-    //   }
-
-    // ===========================================================================
-    // ===========================================================================
-    // ===========================================================================
-
-  // const [dish, setDish] = useState<Dish>(initialState);
-  // const changeHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  //   const { name, value } = event.target;
-  //   setDish((previousDish) => ({
-  //     ...previousDish,
-  //     [name]: name === "price" ? parseInt(value, 10) : value,
-  //     ...(name === "name" && {
-  //       image_url: `https://dummyimage.com/360x360/292929/e3e3e3&text=${encodeURI(value.trim())}`,
-  //     }),
-  //   }));
-  // };
-
-//   function nameChangeHandler({ target: { name, value } }) {
-//     setDish((previousDish) => ({
-//       ...previousDish,
-//       [name]: value,
-//       image_url: `https://dummyimage.com/360x360/292929/e3e3e3&text=${encodeURI(
-//         value.trim()
-//       )}`,
-//     }));
-//   }
-
-//   function changeHandler({ target: { name, value } }) {
-//     setDish((previousDish) => ({
-//       ...previousDish,
-//       [name]: value,
-//     }));
-//   }
-
-//   function priceChangeHandler({ target: { name, value } }) {
-//     setDish((previousDish) => ({
-//       ...previousDish,
-//       [name]: parseInt(value, 10),
-//     }));
-//   }
-
-  // function submitHandler(event: React.FormEvent<HTMLFormElement>) {
-  //   event.preventDefault();
-  //   event.stopPropagation();
-  //   onSubmit(dish);
-  // }
 
   return (
     <>
