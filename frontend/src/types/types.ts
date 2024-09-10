@@ -9,12 +9,13 @@ export interface Dish {
   data?: any;
 };
 
-export type Order = {
+export interface Order {
   id?: number;
   deliverTo: string;
   mobileNumber: string;
   status: string;
   dishes: Dish[];
+  data?: any;
 };
 
 export interface RouteParams {
@@ -26,7 +27,7 @@ export interface ErrorAlertProps {
   error: { message: string } | null;
 };
 
-export type HomeProps = {
+export interface HomeProps {
   addToCart?: (dish: Dish) => void;
 };
 
@@ -36,8 +37,7 @@ export interface MenuProps {
 
 export interface OrderFormProps {
   initialState: Order;
-  // setOrder?: React.Dispatch<React.SetStateAction<Order>>;
-  // onSubmit?: (order: Order) => void;
+  submitHandler?: (order: Order) => void;
   children?: React.ReactNode;
   readOnly?: boolean;
   showStatus?: boolean;
@@ -64,7 +64,7 @@ export interface OrderCreateProps {
 };
 
 export interface ErrorType {
-  message: string;
+  data: string;
 };
 
 export interface OrderFormDishProps {

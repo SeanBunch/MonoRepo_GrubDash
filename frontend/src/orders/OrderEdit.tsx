@@ -1,35 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { deleteOrder } from "../utils/api";
+// import { deleteOrder } from "../utils/api";
 import OrderForm from "./OrderForm";
-import ErrorAlert from "../layout/ErrorAlert";
-import { RouteParams, ErrorType } from "../types/types";
-import { useReadOrderQuery } from "../utils/api";
+// import ErrorAlert from "../layout/ErrorAlert";
+import { RouteParams, Order } from "../types/types";
+import { useReadOrderQuery, useUpdateOrderMutation, useDeleteOrderMutation } from "../utils/api";
 
 function OrderEdit() {
   const history = useHistory();
   const { orderId } = useParams<RouteParams>();
-  // const initialState: Order = {
-  //     id: order.id,
-  //     deliverTo: order.deliverTo,
-  //     mobileNumber: order.mobileNumber,
-  //     status: order.status,
-  //     dishes: order.dishes,
-  // };
+  const { data: ordersData, isSuccess } = useReadOrderQuery(orderId);
+  const [updateOrder] = useUpdateOrderMutation();
+  const [deleteOrder] = useDeleteOrderMutation();
   
-  // const [order, setOrder] = useState<Order | null>(null);
-  const [error, setError] = useState<ErrorType | null>(null);
-  const { data: ordersData } = useReadOrderQuery(orderId);
-
-
+  async function submitHandler(newOrder: Order) {
+    try {
+      const { data: changeOrder} = await updateOrder(newOrder).unwrap();
+      history.push(`/orders/${changeOrder.id}/confirmed`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
   // useEffect(() => {
-  //   const abortController = new AbortController();
+    //   const abortController = new AbortController();
     
-  //   readOrder(orderId, abortController.signal)
-  //   .then((order) => setOrder(order))
-  //   .catch(setError);
+    //   readOrder(orderId, abortController.signal)
+    //   .then((order) => setOrder(order))
+    //   .catch(setError);
     
-  //   return () => abortController.abort();
+    //   return () => abortController.abort();
   // }, [orderId]);
   //============================================================================
   //============================================================================
@@ -48,24 +48,39 @@ function OrderEdit() {
     history.goBack();
   }
 
+  // function deleteHandler() {
+  //   const abortController = new AbortController();
+  // console.log("OrderEdit error", error);
+    
+  //   const confirmed = window.confirm(
+  //     "Delete this order?\n\nYou will not be able to recover it."
+  //   );
+  //   if (confirmed && ordersData && ordersData.id) {
+  //     deleteOrder(ordersData.id, abortController.signal)
+  //       .then(() => history.push("/dashboard"))
+  //       .catch(setError);
+  //   }
+  // }
+
   function deleteHandler() {
-    const abortController = new AbortController();
     
     const confirmed = window.confirm(
       "Delete this order?\n\nYou will not be able to recover it."
     );
     if (confirmed && ordersData && ordersData.id) {
-      deleteOrder(ordersData.id, abortController.signal)
-        .then(() => history.push("/dashboard"))
-        .catch(setError);
+      try {
+        deleteOrder(ordersData.id).unwrap();
+        history.push("/dashboard")
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
   const child = ordersData ? (
     <OrderForm
-    initialState={ordersData}
-      // setOrder={setOrder as React.Dispatch<React.SetStateAction<Order>>}
-      // onSubmit={submitHandler}
+    initialState={ordersData.data}
+      submitHandler={submitHandler}
       readOnly={ordersData.status === "delivered"}
       showStatus={true}
     >
@@ -80,18 +95,18 @@ function OrderEdit() {
         <button
           type="submit"
           className="btn btn-primary"
-          disabled={ordersData.status === "delivered" || ordersData.dishes.length === 0}
+          disabled={ordersData.status === "delivered" || ordersData.data.dishes.length === 0}
         >
           <span className="oi oi-check" /> Submit
         </button>
       </div>
       <div className="col-auto">
-        {ordersData.status === "pending" ? (
+        {isSuccess && ordersData.data.status === "pending" ? (
           <button
             type="button"
             className="btn btn-danger"
             title="Delete Order"
-            disabled={ordersData.status !== "pending"}
+            disabled={false}
             onClick={deleteHandler}
           >
             <span className="oi oi-trash" />
@@ -103,7 +118,7 @@ function OrderEdit() {
               type="button"
               className="btn btn-danger"
               title="Delete Order"
-              disabled={ordersData.status !== "pending"}
+              disabled={true}
               onClick={deleteHandler}
             >
               <span className="oi oi-trash" />
@@ -119,7 +134,7 @@ function OrderEdit() {
   return (
     <main>
       <h1>Edit Order</h1>
-      <ErrorAlert error={error} />
+      {/* <ErrorAlert error={error} /> */}
       {child}
     </main>
   );

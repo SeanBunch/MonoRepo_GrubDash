@@ -1,41 +1,45 @@
-import React, { useState } from "react";
-// import { useHistory } from "react-router-dom";
-// import { createOrder } from "../utils/api";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { useCreateOrderMutation } from "../utils/api";
+import { Order } from "../types/types";
 import OrderForm from "./OrderForm";
-import ErrorAlert from "../layout/ErrorAlert";
-import { ErrorType } from "../types/types";
-import { useSelector } from "react-redux";
-
+import  { clearCart }  from "./cartSlice";
+// import ErrorAlert from "../layout/ErrorAlert";
 function OrderCreate() {
-  // const history = useHistory();
-  const [error, setError] = useState<ErrorType | null>(null);
+  const history = useHistory();
+  const [ createOrder, { error: error } ] = useCreateOrderMutation();
   const cart = useSelector((state: any) => state.cart);
-
-  const initialState = {
-  deliverTo: "",
-  mobileNumber: "",
-  status: "pending",
-  dishes: cart.dishes,
+  const dispatch = useDispatch();
+//   const initialState = {
+//     data : {
+//       deliverTo: "",
+//       mobileNumber: "",
+//       status: "pending",
+//       dishes: cart.dishes,
+//     },
+// };
+const initialState = {
+    deliverTo: "",
+    mobileNumber: "",
+    status: "pending",
+    dishes: cart.dishes,
 };
-
-  // function submitHandler(order: Order) {
-  //   setError(null);
-  //   const abortController = new AbortController();
-
-  //   createOrder(order, abortController.signal).then(onSubmit).catch(setError);
-
-  //   return () => abortController.abort();
-  // }
-  
-  // function onCancel() {
-  //   history.goBack();
-  // }
-
-  return (
-    <main>
+async function submitHandler(newOrder: Order) {
+    try {
+        const { data: spawnOrder } = await createOrder(newOrder).unwrap();
+        dispatch(clearCart());
+        history.push(`/orders/${spawnOrder.id}/confirmed`);
+    } catch (error) {
+      console.log(error);
+    }
+}
+    
+    return (
+      <main>
       <h1>Create Order</h1>
-      <ErrorAlert error={error} />
-      <OrderForm initialState={initialState} setError={setError} />
+      {error ? `Error: ${error}` : null}
+      <OrderForm initialState={initialState} submitHandler={submitHandler}  />
         {/* <div className="col-auto">
           <button
             type="button"

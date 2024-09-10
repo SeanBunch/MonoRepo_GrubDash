@@ -1,54 +1,53 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import OrderFormDish from "./OrderFormDish";
-import { OrderFormProps, Order } from "../types/types";
-// import { createOrder } from "../utils/api";
 import { useHistory } from "react-router-dom";
-import { useCreateOrderMutation } from "../utils/api";
 import { useDispatch } from "react-redux";
+import { OrderFormProps, Order, Dish } from "../types/types";
+import { useDeleteDishMutation } from "../utils/api";
+import OrderFormDish from "./OrderFormDish";
 import { removeFromCart } from "./cartSlice";
 
 
 function OrderForm({ 
   initialState,
-    setError,
-    readOnly = false,
-    showStatus = false,
+  submitHandler,
+  readOnly = false,
+  showStatus = false,
 }: OrderFormProps) {
 
   const history = useHistory();
-  const [createOrder, { error: createError }] = useCreateOrderMutation();
-  const [updateOrder, { error: updateError }] = useCreateOrderMutation();
-  const [newOrder, setNewOrder] = useState<Order>(initialState);
   const dispatch = useDispatch();
-
-  
+  const [newOrder, setNewOrder] = useState<Order>(initialState);
+  const [deleteDish] = useDeleteDishMutation();
   function changeHandler({ target: { name, value } }: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setNewOrder((previousOrder) => ({
       ...previousOrder,
       [name]: value,
     }));
-    
   };
-
-  async function submitHandler(event: FormEvent<HTMLFormElement>) {
-  event.preventDefault();
-  event.stopPropagation();
-    try {
-      if (newOrder.id) {
-        const changeOrder = await updateOrder(newOrder).unwrap();
-        history.push(`/orders/${changeOrder.id}/confirmed`);
-      } else {
-        const spawnOrder = await createOrder(newOrder).unwrap();
-        history.push(`/orders/${spawnOrder.id}/confirmed`);
-      }
-    } catch (error) {
-     
-        setError?.(error as Error); 
-
-     
-      console.log(createError, updateError, error);
+  const onSub = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if(submitHandler) {
+      submitHandler(newOrder);
     }
-}
+  };
+ 
+//   async function submitHandler(event: FormEvent<HTMLFormElement>) {
+//   event.preventDefault();
+//   event.stopPropagation();
+//     try {
+//       if (newOrder.id) {
+//         const changeOrder = await updateOrder(newOrder).unwrap();
+//         history.push(`/orders/${changeOrder.id}/confirmed`);
+//       } else {
+//         const spawnOrder = await createOrder(newOrder).unwrap();
+//         history.push(`/orders/${spawnOrder.id}/confirmed`);
+//       }
+//     } catch (error) {
+     
+//       console.log(createError, updateError, error);
+//     }
+// }
 
 
   // function onSubmit(newOrder: Order) {
@@ -67,11 +66,10 @@ function OrderForm({
   //   }
   //   return () => abortController.abort();
   // }
-  
   function setDishQuantity(dishId: number, quantity: number) {
-    if (initialState) {
+    if (newOrder.dishes) {
       setNewOrder((previousOrder) => {
-        const dishes = previousOrder.dishes.map((dish) => {
+        const dishes = previousOrder.dishes.map((dish: Dish) => {
           return {
             ...dish,
             quantity: dish.id === dishId ? Math.max(1, quantity) : dish.quantity,
@@ -83,49 +81,41 @@ function OrderForm({
           dishes,
         };
       });
-      
     }
   }
 
-function deleteDish(dishId: number) {
+function smite(dishId: number) {
   dispatch(removeFromCart(dishId));
-
-
-    if (initialState) {
-    //  setOrder((previousOrder) => {
-    //   return {
-    //     ...previousOrder,
-    //     dishes: previousOrder.dishes.filter((dish) => dish.id !== dishId),
-    //   };
-    // });
+  deleteDish(dishId);
     setNewOrder((previousOrder) => {
       return {
         ...previousOrder,
         dishes: previousOrder.dishes.filter((dish) => dish.id !== dishId),
       };
     });
-  }
+  
 }
 
-  const dishes = newOrder.dishes.map((dish) => (
+  const dishes = newOrder.dishes?.map((dish: Dish) => (
     <OrderFormDish
       key={dish.id}
       dish={dish}
       setDishQuantity={setDishQuantity}
-      deleteDish={deleteDish}
+      deleteDish={smite}
       readOnly={readOnly}
     />
   ));
 
-  const total = newOrder.dishes.reduce(
-    (sum, dish) => sum + dish.price * (dish.quantity),
+  const total = newOrder.dishes?.reduce(
+    (sum: number, dish: Dish) => sum + dish.price * (dish.quantity),
     0
   );
   function onCancel() {
     history.goBack();
   }
+
   return (
-    <form onSubmit={submitHandler}>
+    <form onSubmit={onSub}>
       <fieldset className="mb-2">
         {showStatus && (
           <div className="form-group">
@@ -140,7 +130,7 @@ function deleteDish(dishId: number) {
               disabled={readOnly}
               onChange={changeHandler}
             >
-              <option value="" disabled>Select a status for the order</option>
+              <option value="select-status" disabled>Select a status for the order</option>
               <option value="pending">Pending</option>
               <option value="preparing">Preparing</option>
               <option value="out-for-delivery">Out for delivery</option>
@@ -210,7 +200,7 @@ function deleteDish(dishId: number) {
           <button
             type="submit"
             className="btn btn-primary"
-            disabled={initialState.dishes.length === 0}
+            disabled={initialState.dishes?.length === 0}
           >
             <span className="oi oi-check" /> Submit
           </button>

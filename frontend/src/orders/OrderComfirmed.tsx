@@ -1,48 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { readOrder } from "../utils/api";
+import React from "react";
 import { useParams } from "react-router-dom";
-import ErrorAlert from "../layout/ErrorAlert";
+// import ErrorAlert from "../layout/ErrorAlert";
 import OrderForm from "./OrderForm";
-import { RouteParams, Order } from "../types/types";
+import { RouteParams} from "../types/types";
+import { useReadOrderQuery } from "../utils/api";
 
 
-const initialState = {
-    id: 0,
-    deliverTo: "",
-    mobileNumber: "",
-    status: "",
-    dishes: [],
-  };
 
 
 function OrderConfirmed() {
   const { orderId } = useParams<RouteParams>();
-
-  const [order, setOrder] = useState<Order | null>({...initialState});
-  const [error, setError] = useState<Error | null>(null);
-
-  useEffect(loadOrder, [orderId]);
-
-  function loadOrder() {
-    const abortController = new AbortController();
-    readOrder(orderId, abortController.signal).then(setOrder).catch(setError);
-
-    return () => abortController.abort();
-  }
-
-
-
-  const child = order ? (
-    <OrderForm initialState={order} readOnly={true} showStatus={true} />
-  ) : (
-    <p>Loading...</p>
-  );
+  const { data: readOrder } = useReadOrderQuery(orderId);
 
   return (
     <main>
       <h1>Order Confirmed</h1>
-      <ErrorAlert error={error} />
-      {child}
+      {
+        // error ? <ErrorAlert error={error} /> : null
+      }
+
+      {
+        readOrder ? (
+          <OrderForm initialState={readOrder} readOnly={true} showStatus={true} />
+        ) : (
+          <p>Loading...</p>
+        )
+      }
     </main>
   );
 }
