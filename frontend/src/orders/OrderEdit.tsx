@@ -1,8 +1,6 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
-// import { deleteOrder } from "../utils/api";
 import OrderForm from "./OrderForm";
-// import ErrorAlert from "../layout/ErrorAlert";
 import { RouteParams, Order } from "../types/types";
 import { useReadOrderQuery, useUpdateOrderMutation, useDeleteOrderMutation } from "../utils/api";
 
