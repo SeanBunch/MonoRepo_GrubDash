@@ -31,7 +31,6 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.dishes = [];
     }
-    // Optionally, add other actions like removeFromCart, clearCart, etc.
   },
 });
 

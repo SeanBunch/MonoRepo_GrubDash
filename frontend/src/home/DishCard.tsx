@@ -1,7 +1,6 @@
 import React from "react";
 import { DishCardProps } from "../types/types";
 
-
 function DishCard({ dish, children }: DishCardProps) {
   return (
     <div className="col-sm-12 col-md-6 col-lg-3 my-2">

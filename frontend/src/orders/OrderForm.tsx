@@ -32,40 +32,7 @@ function OrderForm({
     }
   };
  
-//   async function submitHandler(event: FormEvent<HTMLFormElement>) {
-//   event.preventDefault();
-//   event.stopPropagation();
-//     try {
-//       if (newOrder.id) {
-//         const changeOrder = await updateOrder(newOrder).unwrap();
-//         history.push(`/orders/${changeOrder.id}/confirmed`);
-//       } else {
-//         const spawnOrder = await createOrder(newOrder).unwrap();
-//         history.push(`/orders/${spawnOrder.id}/confirmed`);
-//       }
-//     } catch (error) {
-     
-//       console.log(createError, updateError, error);
-//     }
-// }
 
-
-  // function onSubmit(newOrder: Order) {
-  //   if(setOrder){
-  //     history.push(`/orders/${newOrder.id}/confirmed`);
-  //   }
-  // }
-
-
-  // function submitHandler(event: FormEvent<HTMLFormElement>) {
-  //   const abortController = new AbortController();
-  //   event.preventDefault();
-  //   event.stopPropagation();
-  //   if (onSubmit) {
-  //       createOrder(orderOnSub, abortController.signal).then(onSubmit).catch(setError);
-  //   }
-  //   return () => abortController.abort();
-  // }
   function setDishQuantity(dishId: number, quantity: number) {
     if (newOrder.dishes) {
       setNewOrder((previousOrder) => {

@@ -1,45 +1,10 @@
-// import React, { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
-// import { listOrders, useListOrdersQuery } from "../utils/api";
-// import ErrorAlert from "../layout/ErrorAlert";
-// import { Order } from "../types/types";
-
-
-
-
 import { useListDishesQuery, useListOrdersQuery } from "../utils/api";
 import React from "react";
 import { Link } from "react-router-dom";
 
 function Dashboard() {
-    // const [orders, setOrders] = useState<Order[]>([]);
-    // const [dishes, setDishes] = useState<Dish[]>([]);
-    // const [ordersError, setOrdersError] = useState<Error | null>(null);
-    // const [dishesError, setDishesError] = useState<Error | null>(null);
-//  ===========================================================================
-//  ===========================================================================
-//  ===========================================================================
-
-
-
-
 const { data: dishesData, error } = useListDishesQuery();
 const { data: ordersData, error: ordersError } = useListOrdersQuery();
-// ===========================================================================
-// ===========================================================================
-// ===========================================================================
-
-
-// useEffect(loadDashboard, []);
-  
-  // function loadDashboard() {
-  //   const abortController = new AbortController();
-
-  //   // listOrders(abortController.signal).then(setOrders).catch(setOrdersError);
-  //   // listDishes(abortController.signal).then(setDishes).catch(setDishesError);
-
-  //   return () => abortController.abort();
-  // }
 
   const ordersList = ordersData?.data.map((order, index) => {
     const total = order.dishes.reduce(

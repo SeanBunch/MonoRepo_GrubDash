@@ -2,7 +2,6 @@ import React from "react";
 import Header from "./Header";
 import NotFound from "./NotFound";
 import Menu from "./Menu";
-// import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 import Home from "../home/Home";
@@ -12,51 +11,10 @@ import DishEdit from "../dishes/DishEdit";
 import DishCreate from "../dishes/DishCreate";
 import Dashboard from "../dashboard/Dashbaord";
 import OrderConfirmed from "../orders/OrderComfirmed";
-// import { Order } from "../types/types";
 import { useSelector } from "react-redux";
 
-// const initialState = {
-//   id: 0,
-//   deliverTo: "",
-//   mobileNumber: "",
-//   status: "pending",
-//   dishes: [],
-// };
-
 function Layout() {
-  // const history = useHistory();
-  // const [order, setOrder] = useState<Order>({ ...initialState });
   const cart = useSelector((state: any) => state.cart);
-
-  // function addToCart(newDish: Dish) {
-  //   setOrder((previousOrder) => {
-  //     const index = previousOrder.dishes.findIndex(
-  //       (dish) => dish.id === newDish.id
-  //     );
-
-  //     if (index === -1) {
-  //       return {
-  //         ...previousOrder,
-  //         dishes: previousOrder.dishes.concat({ ...newDish, quantity: 1 }),
-  //       };
-  //     }
-
-  //     const dishes = previousOrder.dishes.map((dish) => ({
-  //       ...dish,
-  //       quantity: dish.quantity ? dish.quantity++ : 1,
-  //     }));
-
-  //     return {
-  //       ...previousOrder,
-  //       dishes,
-  //     };
-  //   });
-  // }
-
-  // function onSubmit(newOrder: Order) {
-  //   setOrder({ ...initialState });
-  //   history.push(`/orders/${newOrder.id}/confirmed`);
-  // }
 
   return (
     <>

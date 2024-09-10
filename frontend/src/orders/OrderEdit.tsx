@@ -21,46 +21,11 @@ function OrderEdit() {
       console.log(error);
     }
   }
-  
-  // useEffect(() => {
-    //   const abortController = new AbortController();
-    
-    //   readOrder(orderId, abortController.signal)
-    //   .then((order) => setOrder(order))
-    //   .catch(setError);
-    
-    //   return () => abortController.abort();
-  // }, [orderId]);
-  //============================================================================
-  //============================================================================
-  //============================================================================
-  // function submitHandler(updatedOrder: Order) {
-  //   const abortController = new AbortController();
-    
-  //   updateOrder(updatedOrder, abortController.signal)
-  //     .then((savedOrder) => history.push(`/orders/${savedOrder.id}/confirmed`))
-  //     .catch(setError);
-
-  //   return () => abortController.abort();
-  // }
 
   function cancelHandler() {
     history.goBack();
   }
 
-  // function deleteHandler() {
-  //   const abortController = new AbortController();
-  // console.log("OrderEdit error", error);
-    
-  //   const confirmed = window.confirm(
-  //     "Delete this order?\n\nYou will not be able to recover it."
-  //   );
-  //   if (confirmed && ordersData && ordersData.id) {
-  //     deleteOrder(ordersData.id, abortController.signal)
-  //       .then(() => history.push("/dashboard"))
-  //       .catch(setError);
-  //   }
-  // }
 
   function deleteHandler() {
     
