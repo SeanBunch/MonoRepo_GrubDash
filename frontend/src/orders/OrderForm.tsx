@@ -2,7 +2,6 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { OrderFormProps, Order, Dish } from "../types/types";
-import { useDeleteDishMutation } from "../utils/api";
 import OrderFormDish from "./OrderFormDish";
 import { removeFromCart } from "./cartSlice";
 
@@ -17,7 +16,6 @@ function OrderForm({
   const history = useHistory();
   const dispatch = useDispatch();
   const [newOrder, setNewOrder] = useState<Order>(initialState);
-  const [deleteDish] = useDeleteDishMutation();
   function changeHandler({ target: { name, value } }: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setNewOrder((previousOrder) => ({
       ...previousOrder,
@@ -53,7 +51,6 @@ function OrderForm({
 
 function smite(dishId: number) {
   dispatch(removeFromCart(dishId));
-  deleteDish(dishId);
     setNewOrder((previousOrder) => {
       return {
         ...previousOrder,
