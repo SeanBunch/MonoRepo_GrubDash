@@ -1,4 +1,4 @@
-# GrubDash Front End Application
+# Meal Deal Front End Application
 
 ## Installation
 

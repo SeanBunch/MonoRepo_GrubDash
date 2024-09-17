@@ -1,17 +1,22 @@
 import React from "react";
+import { OrderFormDishProps } from "../types/types";
 
 function OrderFormDish({
-  dish: { id, name, quantity, price },
+  dish,
   setDishQuantity,
   deleteDish,
   readOnly,
-}) {
-  function changeHandler({ target: { value } }) {
-    setDishQuantity(id, Number(value));
-  }
+}: OrderFormDishProps) {
+  function changeHandler(event: React.ChangeEvent<HTMLInputElement>) {
+    if (dish.id) {
+      setDishQuantity(dish.id, parseInt(event.target.value));
+    }
+}
 
   function deleteHandler() {
-    deleteDish(id);
+    if (dish.id) {
+      deleteDish(dish.id);
+    }
   }
 
   return (
@@ -20,8 +25,8 @@ function OrderFormDish({
         <input
           type="number"
           className="form-control"
-          name={id}
-          value={quantity}
+          name={dish.name}
+          value={dish.quantity}
           disabled={readOnly}
           onChange={changeHandler}
         />
@@ -31,7 +36,7 @@ function OrderFormDish({
           type="text"
           className="form-control"
           disabled={true}
-          value={name}
+          value={dish.name}
         />
       </div>
       <div className="col-md-2 col-lg-1">
@@ -39,16 +44,18 @@ function OrderFormDish({
           type="text"
           className="form-control"
           disabled={true}
-          value={`$ ${price}`}
+          value={`$ ${dish.price}`}
         />
       </div>
       <div className="col-md-2 col-lg-1">
+        {dish.price && dish.quantity !== undefined && (
         <input
           type="text"
           className="form-control"
           disabled={true}
-          value={`$ ${price * quantity}`}
+          value={`$ ${dish.price * dish.quantity}`}
         />
+        )}
       </div>
       {readOnly === false && (
         <div className="col-auto">

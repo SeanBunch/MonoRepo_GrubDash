@@ -1,9 +1,9 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-
+import { MenuProps } from "../types/types";
 import "./Menu.css";
 
-function Menu({ cartCount }) {
+function Menu({ cartCount }: MenuProps) {
   const location = useLocation();
 
   const homeClass = location.pathname === "/" ? "nav-item active" : "nav-item";

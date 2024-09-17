@@ -1,62 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import Header from "./Header";
 import NotFound from "./NotFound";
 import Menu from "./Menu";
-import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
+
 import Home from "../home/Home";
 import OrderCreate from "../orders/OrderCreate";
 import OrderEdit from "../orders/OrderEdit";
 import DishEdit from "../dishes/DishEdit";
 import DishCreate from "../dishes/DishCreate";
 import Dashboard from "../dashboard/Dashbaord";
-import OrderConfirmed from "../orders/OrderComfired";
-
-const initialState = {
-  deliverTo: "",
-  mobilePhone: "",
-  status: "pending",
-  dishes: [],
-};
+import OrderConfirmed from "../orders/OrderComfirmed";
+import { useSelector } from "react-redux";
 
 function Layout() {
-  const history = useHistory();
-  const [order, setOrder] = useState({ ...initialState });
-
-  function addToCart(newDish) {
-    setOrder((previousOrder) => {
-      const index = previousOrder.dishes.findIndex(
-        (dish) => dish.id === newDish.id
-      );
-
-      if (index === -1) {
-        return {
-          ...previousOrder,
-          dishes: previousOrder.dishes.concat({ ...newDish, quantity: 1 }),
-        };
-      }
-
-      const dishes = previousOrder.dishes.map((dish) => ({
-        ...dish,
-        quantity: dish.quantity + (dish.id === newDish.id),
-      }));
-
-      return {
-        ...previousOrder,
-        dishes,
-      };
-    });
-  }
-
-  function onSubmit(newOrder) {
-    setOrder({ ...initialState });
-    history.push(`/orders/${newOrder.id}/confirmed`);
-  }
+  const cart = useSelector((state: any) => state.cart);
 
   return (
     <>
       <Header />
       <Menu
-        cartCount={order.dishes.reduce((sum, dish) => sum + dish.quantity, 0)}
+        cartCount={cart.dishes.reduce(
+          (sum: number, dish: { quantity: number }) => sum + (dish.quantity ?? 0), 0)
+                  }
       />
       <div className="container">
         <Switch>
@@ -68,9 +34,8 @@ function Layout() {
           </Route>
           <Route path="/orders/new">
             <OrderCreate
-              order={order}
-              setOrder={setOrder}
-              onSubmit={onSubmit}
+              // order={order}
+              // setOrder={setOrder}
             />
           </Route>
           <Route path="/orders/:orderId/confirmed">
@@ -89,7 +54,7 @@ function Layout() {
             <DishCreate />
           </Route>
           <Route exact={true} path="/">
-            <Home addToCart={addToCart} />
+            <Home />
           </Route>
           <Route>
             <NotFound />

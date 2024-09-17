@@ -1,6 +1,6 @@
 import React from "react";
 
-function NotFound() {
+const NotFound: React.FC = () => {
   return (
     <div className="NotFound">
       <h1>Not Found</h1>

@@ -1,89 +1,85 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { OrderFormProps, Order, Dish } from "../types/types";
 import OrderFormDish from "./OrderFormDish";
+import { removeFromCart } from "./cartSlice";
 
-function OrderForm({
-  order = {
-    deliverTo: "",
-    mobileNumber: "",
-    status: "pending",
-    dishes: [],
-  },
-  setOrder,
-  onSubmit,
-  children,
+
+function OrderForm({ 
+  initialState,
+  submitHandler,
   readOnly = false,
   showStatus = false,
-}) {
-  const [orderOnSub, setorderOnSub] = useState({
-    id: order.id,
-    deliverTo: order.deliverTo,
-    mobileNumber: order.mobileNumber,
-    status: order.status,
-    dishes: order.dishes,
-  });
-  
-  function changeHandler({ target: { name, value } }) {
-    setorderOnSub((previousOrder) => ({
+}: OrderFormProps) {
+
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [newOrder, setNewOrder] = useState<Order>(initialState);
+  function changeHandler({ target: { name, value } }: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    setNewOrder((previousOrder) => ({
       ...previousOrder,
       [name]: value,
     }));
-    
-  }
-
-  function submitHandler(event) {
+  };
+  const onSub = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    onSubmit(orderOnSub);
-  }
+    if(submitHandler) {
+      submitHandler(newOrder);
+    }
+  };
+ 
 
-  function setDishQuantity(dishId, quantity) {
-    setOrder((previousOrder) => {
-      const dishes = previousOrder.dishes.map((dish) => {
+  function setDishQuantity(dishId: number, quantity: number) {
+    if (newOrder.dishes) {
+      setNewOrder((previousOrder) => {
+        const dishes = previousOrder.dishes.map((dish: Dish) => {
+          return {
+            ...dish,
+            quantity: dish.id === dishId ? Math.max(1, quantity) : dish.quantity,
+          };
+        });
+  
         return {
-          ...dish,
-          quantity: dish.id === dishId ? Math.max(1, quantity) : dish.quantity,
+          ...previousOrder,
+          dishes,
         };
       });
-
-      return {
-        ...previousOrder,
-        dishes,
-      };
-    });
+    }
   }
 
-function deleteDish(dishId) {
-     setOrder((previousOrder) => {
+function smite(dishId: number) {
+  dispatch(removeFromCart(dishId));
+    setNewOrder((previousOrder) => {
       return {
         ...previousOrder,
         dishes: previousOrder.dishes.filter((dish) => dish.id !== dishId),
       };
     });
-    setorderOnSub((previousOrder) => {
-      return {
-        ...previousOrder,
-        dishes: previousOrder.dishes.filter((dish) => dish.id !== dishId),
-      };
-    });
-  }
+  
+}
 
-  const dishes = order.dishes.map((dish) => (
+  const dishes = newOrder.dishes?.map((dish: Dish) => (
     <OrderFormDish
       key={dish.id}
       dish={dish}
       setDishQuantity={setDishQuantity}
-      deleteDish={deleteDish}
+      deleteDish={smite}
       readOnly={readOnly}
     />
   ));
 
-  const total = order.dishes.reduce(
-    (sum, dish) => sum + dish.price * dish.quantity,
+  const total = newOrder.dishes?.reduce(
+    (sum: number, dish: Dish) => sum + dish.price * (dish.quantity),
     0
   );
+  function onCancel() {
+    history.goBack();
+  }
 
   return (
-    <form onSubmit={submitHandler}>
+    <form onSubmit={onSub}>
       <fieldset className="mb-2">
         {showStatus && (
           <div className="form-group">
@@ -93,11 +89,12 @@ function deleteDish(dishId) {
               id="status"
               name="status"
               required={true}
-              value={orderOnSub.status}
-              placeholder="Select a status for the order"
+              value={newOrder.status}
+              // placeholder="Select a status for the order"
               disabled={readOnly}
               onChange={changeHandler}
             >
+              <option value="select-status" disabled>Select a status for the order</option>
               <option value="pending">Pending</option>
               <option value="preparing">Preparing</option>
               <option value="out-for-delivery">Out for delivery</option>
@@ -113,7 +110,7 @@ function deleteDish(dishId) {
             id="deliverTo"
             name="deliverTo"
             required={true}
-            value={orderOnSub.deliverTo}
+            value={newOrder.deliverTo}
             placeholder="Enter the delivery address"
             disabled={readOnly}
             onChange={changeHandler}
@@ -127,7 +124,7 @@ function deleteDish(dishId) {
             id="mobileNumber"
             name="mobileNumber"
             required={true}
-            value={orderOnSub.mobileNumber}
+            value={newOrder.mobileNumber}
             placeholder="Enter your mobile number"
             disabled={readOnly}
             onChange={changeHandler}
@@ -153,7 +150,26 @@ function deleteDish(dishId) {
           </h3>
         </div>
       </fieldset>
-      <div className="form-row">{children}</div>
+      <div className="form-row">
+      <div className="col-auto">
+          <button
+            type="button"
+            className="btn btn-secondary mr-2"
+            onClick={onCancel}
+          >
+            <span className="oi oi-x" /> Cancel
+          </button>
+        </div>
+        <div className="col-auto">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={initialState.dishes?.length === 0}
+          >
+            <span className="oi oi-check" /> Submit
+          </button>
+        </div>
+      </div>
     </form>
   );
 }
